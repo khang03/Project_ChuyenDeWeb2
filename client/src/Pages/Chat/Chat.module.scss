@@ -1,0 +1,174 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    .list_chat {
+        width: 30%;
+        height: 100%;
+        border-left: 1px solid #9c9393;
+        scrollbar-width: none;
+        overflow: auto;
+        .title_chat {
+            font-size: 20px;
+            font-weight: 600;
+            height: 170px;
+            padding: 20px;
+        }
+        .user_chat {
+            display: flex;
+            padding: 10px 0 10px 20px;
+            .div_avatar {
+            }
+
+            .name_user {
+                padding: 0px 20px;
+                line-height: 30px;
+                .span_name_user {
+                    font-weight: bold;
+                }
+                .span_time_send_mess {
+                    color: #9c9393;
+                }
+            }
+        }
+        .user_chat:hover {
+            background-color: #e1dfdf;
+            cursor: pointer;
+        }
+    }
+    .chat {
+        width: 70%;
+        height: 100%;
+        border-left: 1px solid #9c9393;
+        position: relative;
+
+        .header_chat {
+            width: 100%;
+            height: 15%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #9c9393;
+            top: 0;
+            .div_avatar {
+                width: 10%;
+                height: 100%;
+            }
+            .wr_user_name {
+                .user_name {
+                    font-size: 25px;
+                }
+                .span_time_onl {
+                    color: #9c9393;
+                }
+            }
+        }
+        .content_mess {
+            height: 75%;
+            width: 100%;
+            overflow: auto;
+            scrollbar-width: none;
+            padding: 0px 20px;
+            .my_mess {
+                max-width: 100%;
+                height: fit-content;
+                display: flex;
+                justify-content: end;
+                margin-top: 20px;
+                .content_my_mess {
+                    max-width: 70%;
+                    min-height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: end;
+                    background-color: #9c9393;
+                    padding: 5px 10px;
+                    background-color: #0bb895;
+                    color: #fff;
+                    border-radius: 25px;
+                    border-bottom-right-radius: 0;
+                    word-wrap: break-word;
+                }
+            }
+        }
+        .user_mess {
+            max-width: 100%;
+            height: fit-content;
+            display: flex;
+            justify-content: start;
+            margin-top: 30px;
+            .avatar_user_mess{
+
+            }
+            .content_user_mess{
+                max-width: 70%;
+                    min-height: 40px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: end;
+                    background-color: #e4e3e3;
+                    padding: 5px 10px;
+                    color: #333;
+                    border-radius: 25px;
+                    word-wrap: break-word;
+                    margin-left: 20px;
+            }
+        }
+        .wr_send_mess {
+            width: 100%;
+            height: 10%;
+            bottom: 0;
+
+            align-items: center;
+            display: flex;
+            padding: 0 20px;
+
+            .wr_input_mess {
+                width: 100%;
+                height: 60%;
+                border: 1px solid #9c9393;
+                border-radius: 25px;
+                display: flex;
+                padding: 10px 10px 10px 10px;
+                input {
+                    width: 90%;
+                    outline: none;
+                    border: 0;
+                    word-wrap: break-word;
+                }
+                button{
+                    width: 5%;
+                    height: 100%;
+                    background-color: #00000000;
+                    border: 0;
+                    color: #046d58;
+                    font-weight: bold;
+                }
+
+                .wr_inp_img {
+                    width: 5%;
+                    display: flex;
+                    align-items: center;
+                    label {
+                        color: #9c9393;
+                        font-size: 20px;
+                        display: inline-block;  
+                        cursor: pointer;
+            
+                        .img_icon {
+                            margin-left: -20px;
+                            cursor: pointer;
+                        }
+                    }
+            
+                    .inp_img {
+                        opacity: 0;
+                        width: 20px;
+                        cursor: pointer;
+                        height: 20px;
+                    }
+                }
+            }
+        }
+    }
+}

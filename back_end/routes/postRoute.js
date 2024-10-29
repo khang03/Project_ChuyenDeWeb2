@@ -5,6 +5,7 @@ const postRouter = express.Router();
 
 
 postRouter.get('/', postController.index);
+postRouter.get('/:id', postController.index);
 
 
 

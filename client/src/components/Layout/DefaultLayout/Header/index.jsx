@@ -10,7 +10,7 @@ function Header() {
                     Trang chủ
                 </Link>
                 <span>Dành cho bạn</span>
-                <span>Đăng Xuất</span>
+                <Link to="/Login">Đăng xuất</Link>
             </div>
         </header>
     );

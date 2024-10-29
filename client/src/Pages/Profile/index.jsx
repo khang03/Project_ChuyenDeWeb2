@@ -23,51 +23,61 @@ const arr_post = [
         post_id: 1,
         description: 'Hôm nay buồn quá các bạn',
         img: 'https://th.bing.com/th/id/OIP._9ASq3twoUAAMV6Xb-uvlwHaFm?rs=1&pid=ImgDetMain',
+        like: 0,
     },
     {
         post_id: 2,
         description: 'Khá đẹp trai',
         img: 'https://th.bing.com/th/id/OIP.hvq1mk4KaOTVcy_L-CY5xgHaFb?w=231&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+        like: 0,
     },
     {
         post_id: 3,
         description: 'Em khang mafia',
         img: 'https://th.bing.com/th/id/OIP.XiwYd2wYl5HB7NVFZXe8gAHaHa?w=163&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+        like: 0,
     },
     {
         post_id: 4,
         description: 'Có những thứ đâu phải nói z là z',
         img: 'https://th.bing.com/th/id/OIP._9ASq3twoUAAMV6Xb-uvlwHaFm?rs=1&pid=ImgDetMain',
+        like: 0,
     },
     {
         post_id: 5,
         description: 'aaaaaaaaaaaaaaaaaaaaaaa',
         img: 'https://th.bing.com/th/id/OIP._9ASq3twoUAAMV6Xb-uvlwHaFm?rs=1&pid=ImgDetMain',
+        like: 0,
     },
     {
         post_id: 6,
         description: 'Hello cả nhà yêu của Kem',
         img: 'https://th.bing.com/th/id/OIP.SsnrO7pzZHaycvEAI7gQ2AHaEn?w=280&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+        like: 0,
     },
     {
         post_id: 7,
         description: 'Olele Olala',
         img: 'https://th.bing.com/th/id/OIP.6nDu0p6RwW2arJTCOU2pCQHaDt?w=327&h=174&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+        like: 0,
     },
     {
         post_id: 8,
         description: 'Trời hôm nay nhiều mây cực',
         img: 'https://th.bing.com/th/id/OIP._9ASq3twoUAAMV6Xb-uvlwHaFm?rs=1&pid=ImgDetMain',
+        like: 0,
     },
     {
         post_id: 9,
         description: 'Mẹ ơi, thằng con trai của mẹ là một thằng phản bội',
         img: 'https://th.bing.com/th/id/OIP._9ASq3twoUAAMV6Xb-uvlwHaFm?rs=1&pid=ImgDetMain',
+        like: 0,
     },
     {
         post_id: 10,
         description: 'Hôm nay vui quá các bạn',
         img: 'https://th.bing.com/th/id/OIP._9ASq3twoUAAMV6Xb-uvlwHaFm?rs=1&pid=ImgDetMain',
+        like: 0,
     },
 ];
 
@@ -75,17 +85,16 @@ function Profile() {
     const [user, setUser] = useState(null);
     const [posts, setPosts] = useState([]);
     console.log(posts);
-    
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-      setPosts(response.data);
-    };
 
-    fetchPosts();
-    setUser(user_data)
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const response = await axios.get('http://localhost:8080/posts');
+            setPosts(response.data);
+        };
 
-  }, []);
+        fetchPosts();
+        setUser(user_data);
+    }, []);
 
     //----------------------------------------------Phan xu li render up post---------------------------------------
     const [btnUpLoad, setBtnUpLoad] = useState(false);
@@ -173,9 +182,7 @@ function Profile() {
     //Xử lí nút like bài viết
     const [like, setLike] = useState();
     const [countLike, setCountLike] = useState(0);
-    const handleLike = async (id) => {
-        
-        setLike(true);
+    const handleLike = (id) => {
         if (like) {
             setCountLike(countLike - 1);
         } else {
@@ -221,15 +228,15 @@ function Profile() {
 
                     {/* Phần bài viết trong trang cá nhân */}
                     {posts.map((item, index) => (
-                        <div className={cx('wr_post')}>
+                        <div className={cx('wr_post')} id={item.id} >
                             <div className={cx('wr_image')}>
                                 <Avatar alt="My avatar" src={item.img} />
                             </div>
-                            <div className={cx('container_post')} >
+                            <div className={cx('container_post')}>
                                 <div className={cx('my_user')} key={item.id}>
                                     <Link to={`/DetailPost/${item.id}`}>
                                         <div className={cx('id_and_day')}>
-                                            <p>{item.title}</p>
+                                            <p>{item.id}</p>
                                             <span>01/01/2024</span>
                                         </div>
                                     </Link>
@@ -263,19 +270,21 @@ function Profile() {
                                     </div>
                                 </div>
                                 <div className={cx('des_post')}>
-                                    <p>{item.description}</p>
+                                    <p>{item.content}</p>
                                 </div>
                                 <div className={cx('file_post')}>
                                     <img src={item.img} />
                                 </div>
                                 <div className={cx('interact')}>
-                                    <button onClick={handleLike} className={cx('like')}>
+                                    <button onClick={handleLike} className={cx('like')} id={item.id}>
                                         {like ? <BiSolidHeart style={{ color: 'red' }} /> : <BiHeart />}{' '}
                                     </button>{' '}
                                     <label>{countLike}</label>
-                                    <button className={cx('comment')} onClick={handleClickPage}>
-                                        <BiMessageRounded />{' '}
-                                    </button>{' '}
+                                    <Link to={`/DetailPost/${item.id}`}>
+                                        <button className={cx('comment')} onClick={handleClickPage}>
+                                            <BiMessageRounded />{' '}
+                                        </button>{' '}
+                                    </Link>
                                     <label>Comment</label>
                                     <button className={cx('share')}>
                                         <BiShare />

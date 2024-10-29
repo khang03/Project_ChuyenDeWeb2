@@ -71,7 +71,7 @@ function DetailPost() {
       };
   
       fetchPost();
-    },);
+    },[]);
 
     
     //Xử lí nút like bài viết

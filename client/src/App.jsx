@@ -1,7 +1,8 @@
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes } from '~/routes';
-import { DefaultLayout } from '~/components/Layout';
+import { DefaultLayout, HeaderOnlyLayout } from '~/components/Layout';
+
 import { Switch } from '@mui/material';
 import Profile from './Pages/Profile';
 import DetailPost from './Pages/DetailPost';
@@ -18,10 +19,11 @@ function App() {
                             Layout = route.layout;
                         } else if (route.layout === null) {
                             Layout = Fragment;
+                        } else if (route.layout === HeaderOnlyLayout) {
+                            Layout = HeaderOnlyLayout;
                         }
                         return (
                             <Fragment>
-
                                 <Route
                                     key={index}
                                     path={route.path}
@@ -31,9 +33,7 @@ function App() {
                                         </Layout>
                                     }
                                 ></Route>
-                                
                             </Fragment>
-                                
                         );
                     })}
                 </Routes>
