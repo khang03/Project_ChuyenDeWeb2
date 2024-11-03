@@ -29,13 +29,21 @@
     position: absolute;
     min-height: 280px;
     max-height: fit-content;
+
+    .txt_des {
+        border: none;
+        outline: none;
+    }
     .wr_btn_upl_stt {
+        position: relative;
         height: 100%;
         width: 100%;
         align-content: center;
         text-align: right;
         padding-right: 15px;
         margin-top: 20px;
+        top: 84px;
+        left: 100px;
 
         .btn_upload {
             height: 40px;
@@ -133,11 +141,17 @@
     min-height: 280px;
     max-height: fit-content;
 }
+.box_error {
+    padding: 0 20px;
+    margin-top: 40px;
+    color: rgb(255, 80, 80);
+}
 
 .info_render {
     width: 100%;
     height: 100px;
     padding: 0 20px;
+    margin-top: 20px;
 }
 
 .btn_upl_stt {

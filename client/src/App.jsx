@@ -2,12 +2,12 @@ import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes } from '~/routes';
 import { DefaultLayout } from '~/components/Layout';
-import { Switch } from '@mui/material';
-import Profile from './Pages/Profile';
-import DetailPost from './Pages/DetailPost';
 import HeaderOnlyLayout from './components/Layout/HeaderOnlyLayout';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
+    
     return (
         <Router>
             <div className="App">
@@ -38,6 +38,8 @@ function App() {
                         );
                     })}
                 </Routes>
+                {/* Gửi thông báo toàn trang */}
+                <ToastContainer />
             </div>
         </Router>
     );

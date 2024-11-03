@@ -15,20 +15,21 @@ function Home() {
     const [showModalPost,setShowModalPost] = useState(false);
     const [dataPosts, setDataPost] = useState([]);
     
+    // useEffect(() => {    
+    //     axios.get('http://localhost:8080/users')
+    //         .then(response => setDataPost(response.data))
+    //         .catch(error => console.log('Không lấy được dữ liệu',error));
+    // },[])
+
     
-    useEffect(() => {    
-        axios.get('http://localhost:8080/users')
-            .then(response => setDataPost(response.data))
-            .catch(error => console.log('Không lấy được dữ liệu',error));
-    },[])
-
-
+    
     return (
         <Fragment>
+          
             <div className={cx('wrapper')} style={{ height: '1000px' }}>
                 <div className={cx('wr_startus')}>
                     <div className={cx('img_startus')}>
-                        <img alt='' src="" />
+                        <img alt='' src="http://localhost:8080/uploads\1730603425289-images.jpg" />
                     </div>
                     <div className={cx('des_startus')}>
                         <input placeholder="Có gì hot?" />
