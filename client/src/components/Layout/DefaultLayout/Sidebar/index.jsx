@@ -13,11 +13,11 @@ import {
     BiSolidChat,
     BiSolidHomeAlt2,
 } from 'react-icons/bi';
+import { MdOutlineAdminPanelSettings, MdAdminPanelSettings } from 'react-icons/md';
 import { useEffect, useState } from 'react';
 import { Button, Menu, MenuItem, Fade } from '@mui/material';
-import { IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline } from 'react-icons/io5';
 import axios from 'axios';
-
 
 const cx = classNames.bind(styles);
 function Sidebar() {
@@ -27,6 +27,7 @@ function Sidebar() {
     const isNotiPage = location.pathname === '/Notification';
     const isProfile = location.pathname === '/Profile';
     const isChat = location.pathname === '/Chat';
+    const isAdmin = location.pathname === '/Admin';
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -64,6 +65,8 @@ function Sidebar() {
         };
         fetchUserData();
     }, []);
+    console.log(userId);
+
     return (
         <aside className={cx('sidebar')}>
             <ul className={cx('list_nav')}>
@@ -81,32 +84,40 @@ function Sidebar() {
                     <Link to="/Chat">{isChat ? <BiSolidChat /> : <BiChat />}</Link>
                 </li>
                 <li className={cx('item_nav')}>
-                    <Link to="/Profile/">{isProfile ? <BiSolidUser /> : <BiUser />}</Link>
+                    <Link to="/Profile">{isProfile ? <BiSolidUser /> : <BiUser />}</Link>
                 </li>
+                {userId.role === 1 && (
+                    <li className={cx('item_nav')}>
+                        <Link to="/Admin">{isAdmin ? <MdAdminPanelSettings /> : <MdOutlineAdminPanelSettings />}</Link>
+                    </li>
+                )}
+
                 <li className={cx('item_nav')}>
-                        <Button
-                            id="fade-button"
-                            aria-controls={open ? 'fade-menu' : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
-                            onClick={handleClick}
-                            className={cx('btn_menu')}
-                            style={{fontSize: '30px', color:'#333'}}
-                        >
-                            <IoSettingsOutline />
-                        </Button>
-                        <Menu
-                            id="fade-menu"
-                            MenuListProps={{
-                                'aria-labelledby': 'fade-button',
-                            }}
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            TransitionComponent={Fade}
-                        >
-                            <MenuItem><Link to={`http://localhost:3000/ChangPass/${userId.id}`}>Đổi Mật Khẩu</Link></MenuItem>
-                        </Menu>
+                    <Button
+                        id="fade-button"
+                        aria-controls={open ? 'fade-menu' : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClick}
+                        className={cx('btn_menu')}
+                        style={{ fontSize: '30px', color: '#333' }}
+                    >
+                        <IoSettingsOutline />
+                    </Button>
+                    <Menu
+                        id="fade-menu"
+                        MenuListProps={{
+                            'aria-labelledby': 'fade-button',
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        TransitionComponent={Fade}
+                    >
+                        <MenuItem>
+                            <Link to={`http://localhost:3000/ChangPass/${userId.id}`}>Đổi Mật Khẩu</Link>
+                        </MenuItem>
+                    </Menu>
                 </li>
             </ul>
         </aside>

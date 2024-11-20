@@ -165,12 +165,12 @@ const PostUser = ({ isActiveEdit, setPosts, user, item, index }) => {
             <div className={cx('post')} key={item.id}>
                 <>
                     <div className={cx('wr_startus_post')}>
-                        <div className={cx('img_startus')}>
+                        <div className={cx('img_startus')} id={item.oneUser.id}>
                             <img alt="" src={item.oneUser.avatar} />
                         </div>
                         <div className={cx('wr_des_post')}>
                             <div className={cx('user_id')}>
-                                <p>{item.oneUser.username}</p>{' '}
+                                <p>{item.oneUser.username}</p>
                                 <span>
                                     <TimeUp time={item.createdAt} />
                                 </span>

@@ -3,6 +3,7 @@ import style from './Notification.module.scss';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import TimeUp from '~/components/TimeUp';
+import { BiHeart} from 'react-icons/bi';
 
 function Notification() {
     const cx = classNames.bind(style);

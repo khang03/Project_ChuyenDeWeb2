@@ -60,7 +60,7 @@ function Chat() {
             }
         };
         fetchMessage();
-    }, [allMess]);
+    }, [allMess.length]);
 
     //hàm gửi tin nhắn
     const sendMessage = async () => {

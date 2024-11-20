@@ -34,7 +34,8 @@ function Home() {
 
     //Lấy token người dùng
     const token = localStorage.getItem('authToken');
-
+    console.log(posts);
+    
     //Lấy dữ liệu userId khi đăng nhập vào
     useEffect(() => {
         const fetchUserData = async () => {
@@ -87,6 +88,7 @@ function Home() {
                 {posts.map((item, index) => (
                     // console.log(item)
                     <PostUser setPosts={setPosts} user={user} key={item.id} item={item} index={index} />
+                    
                 ))}
             </div>
         </Fragment>
