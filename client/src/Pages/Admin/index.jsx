@@ -7,7 +7,7 @@ import classNames from 'classnames/bind';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import TimeUp from '~/components/TimeUp';
-import { FaHistory } from "react-icons/fa";
+import { FaHistory } from 'react-icons/fa';
 function AdminPage() {
     //set trạng thái để render theo mục
     const [account, setAccount] = useState(true);
@@ -122,7 +122,17 @@ function AdminPage() {
         fetchNotification();
     }, []);
 
-    console.log(report);
+    const handleDeteleNoti = (id) => {
+        try {
+            axios.delete(`http://localhost:8080/notification/delete/${id}`);
+            alert("Xoá thành công")
+            setReport((prevReport) => {
+                return prevReport.filter((report) => report.id !== id);
+            })
+        } catch {
+            console.log('không thể xoá');
+        }
+    };
 
     const cx = classNames.bind(style);
     return (
@@ -283,7 +293,10 @@ function AdminPage() {
                                             <p className={cx('content')}>Nội dung: {post.content}</p>
 
                                             <p>Lí do: {report.message}</p>
-                                            <span style={{display:'flex', alignItems: 'center'}}><FaHistory />&nbsp; <TimeUp time={report.createdAt}/></span>
+                                            <span style={{ display: 'flex', alignItems: 'center' }}>
+                                                <FaHistory />
+                                                &nbsp; <TimeUp time={report.createdAt} />
+                                            </span>
                                         </div>
                                         <div className={cx('image_post')}>
                                             {post &&
@@ -297,12 +310,15 @@ function AdminPage() {
                                         </div>
 
                                         <div className={cx('action_post')}>
-                                            <button className={cx('btn_delete')}>
+                                            <button
+                                                onClick={() => handleDeteleNoti(report.id)}
+                                                className={cx('btn_delete')}
+                                            >
                                                 <MdDeleteForever />
                                             </button>
                                             <br />
                                             <Link className={cx('detail_post')} to={`/DetailPost/${post.id}`}>
-                                                Xem  <BiSolidChevronsRight />
+                                                Xem <BiSolidChevronsRight />
                                             </Link>
                                         </div>
                                     </div>

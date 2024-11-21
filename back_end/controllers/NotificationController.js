@@ -74,5 +74,15 @@ class NotificationController {
       console.log("lỗi tạo thông báo");
     }
   }
+
+  async deleteNotification(req, res){
+    const {id} = req.params
+    try {
+      dbModel.Notification.destroy({where: {id}})
+    }catch{
+      console.log("không xoá được");
+      
+    }
+  }
 }
 module.exports = new NotificationController();
