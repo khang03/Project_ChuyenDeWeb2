@@ -1,0 +1,45 @@
+
+$height : 400px; 
+$width: 500px;   
+.wrapper{
+    width: 100%;
+    height: 100%;
+    .wr_modal{
+       
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        background-color: hsla(0, 0%, 20%, 0.725);
+        .modal_report_category{
+            position: absolute;
+            width: $width;
+            height: $height;
+            background-color: #fff;
+            top: calc(50% - ($height / 2));
+            left: calc(50% - ($width /2));
+            border-radius: 15px;
+            .title{
+                width: 100%;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-bottom: 1px solid #ababab;
+            }
+            .content_report{
+                width: 100%;
+                height: 50px;
+                border-bottom: 1px solid #ababab;
+                display: flex;
+                align-items: center;
+                padding: 0 10px;
+
+            }
+            .content_report:hover{
+                cursor: pointer;
+                background-color: #dedede;
+                box-shadow: 0px 2px 5px;
+            }
+        }
+    }
+}

@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
+      role: DataTypes.INTEGER,
     },
     {
       sequelize,

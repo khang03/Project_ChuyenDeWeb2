@@ -1,35 +1,52 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MdDeleteForever } from 'react-icons/md';
+import { BiSolidChevronsRight } from 'react-icons/bi';
 import style from './admin.module.scss';
 import classNames from 'classnames/bind';
 import { toast } from 'react-toastify';
-
+import { Link } from 'react-router-dom';
+import TimeUp from '~/components/TimeUp';
+import { FaHistory } from "react-icons/fa";
 function AdminPage() {
     //set trạng thái để render theo mục
     const [account, setAccount] = useState(true);
     const [postManager, setPostManager] = useState(false);
     const [commentManager, setCommentManager] = useState(false);
+    const [reportPort, setReportPost] = useState(false);
 
     //tạo useState lấy tất cả user và post
     const [users, setUsers] = useState([]);
     const [posts, setPosts] = useState([]);
     const [comments, setComments] = useState([]);
+
+    //Tạo useState lấy thông báo report cho admin
+    const [report, setReport] = useState([]);
+
     const renderQuanLyUser = () => {
         setAccount(true);
         setPostManager(false);
         setCommentManager(false);
+        setReportPost(false);
     };
     const renderQuanLyPost = () => {
         setAccount(false);
         setPostManager(true);
         setCommentManager(false);
+        setReportPost(false);
     };
 
     const renderQuanLyBinhLuan = () => {
         setAccount(false);
         setPostManager(false);
+        setReportPost(false);
         setCommentManager(true);
+    };
+    const renderReportPost = () => {
+        setAccount(false);
+        setPostManager(false);
+        setCommentManager(false);
+        setReportPost(true);
     };
 
     //useEffect để lấy tất cả user
@@ -95,31 +112,87 @@ function AdminPage() {
         }
     };
 
+    //Lấy tất cả các thông báo có role là 1
+    useEffect(() => {
+        const fetchNotification = async () => {
+            const response = await axios.get('http://localhost:8080/notification/');
+            setReport(response.data.notification);
+        };
+
+        fetchNotification();
+    }, []);
+
+    console.log(report);
+
     const cx = classNames.bind(style);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('header_admin')}>
                 <div className={cx('list_category')}>
-                    <div className={cx('item_category')}
+                    <div
+                        className={cx('item_category')}
                         onClick={renderQuanLyUser}
-                        style={account ? { color: '#333', fontWeight: 'bold' } : { color: '#919191' }}
+                        style={
+                            account
+                                ? {
+                                      color: '#03846aed',
+                                      fontWeight: 'bold',
+                                      borderBottom: '3px solid #03846ab5',
+                                      backgroundColor: '#024a3b0a',
+                                  }
+                                : { color: '#919191' }
+                        }
                     >
                         Quản lý tài khoản
                     </div>
-                    <div className={cx('item_category')}
+                    <div
+                        className={cx('item_category')}
                         onClick={renderQuanLyPost}
-                        style={postManager ? { color: '#333', fontWeight: 'bold' } : { color: '#919191' }}
+                        style={
+                            postManager
+                                ? {
+                                      color: '#03846aed',
+                                      fontWeight: 'bold',
+                                      borderBottom: '3px solid #03846ab5',
+                                      backgroundColor: '#024a3b0a',
+                                  }
+                                : { color: '#919191' }
+                        }
                     >
                         Quản lý bài viết
                     </div>
-                    <div className={cx('item_category')}
+                    <div
+                        className={cx('item_category')}
                         onClick={renderQuanLyBinhLuan}
-                        style={commentManager ? { color: '#333', fontWeight: 'bold' } : { color: '#919191' }}
+                        style={
+                            commentManager
+                                ? {
+                                      color: '#03846aed',
+                                      fontWeight: 'bold',
+                                      borderBottom: '3px solid #03846ab5',
+                                      backgroundColor: '#024a3b0a',
+                                  }
+                                : { color: '#919191' }
+                        }
                     >
                         Quản lý bình luận
                     </div>
-                   
-
+                    <div
+                        onClick={renderReportPost}
+                        className={cx('item_category')}
+                        style={
+                            reportPort
+                                ? {
+                                      color: '#03846aed',
+                                      fontWeight: 'bold',
+                                      borderBottom: '3px solid #03846ab5',
+                                      backgroundColor: '#024a3b0a',
+                                  }
+                                : { color: '#919191' }
+                        }
+                    >
+                        Báo cáo bài viết
+                    </div>
                 </div>
             </div>
             <div className={cx('wrapper_content')}>
@@ -184,6 +257,58 @@ function AdminPage() {
                             </div>
                         </div>
                     ))}
+
+                {reportPort &&
+                    report.map((report, index) =>
+                        posts.map(
+                            (post) =>
+                                post.id === report.post_id && (
+                                    <div className={cx('content_Post')} key={index}>
+                                        <div className={cx('info_user')}>
+                                            {users.map(
+                                                (user, index) =>
+                                                    user?.id === report.user_id && (
+                                                        <p key={index}>
+                                                            Chủ bài viết:{' '}
+                                                            <Link
+                                                                style={{ fontWeight: 'bold' }}
+                                                                to={`/ProfileOther/${user.id}`}
+                                                            >
+                                                                {user.username}
+                                                            </Link>
+                                                        </p>
+                                                    ),
+                                            )}
+
+                                            <p className={cx('content')}>Nội dung: {post.content}</p>
+
+                                            <p>Lí do: {report.message}</p>
+                                            <span style={{display:'flex', alignItems: 'center'}}><FaHistory />&nbsp; <TimeUp time={report.createdAt}/></span>
+                                        </div>
+                                        <div className={cx('image_post')}>
+                                            {post &&
+                                                post.manyImage.map((item, index) => (
+                                                    <img
+                                                        key={index}
+                                                        src={`http://localhost:8080/uploads/${item.img_url}`}
+                                                        alt=""
+                                                    />
+                                                ))}
+                                        </div>
+
+                                        <div className={cx('action_post')}>
+                                            <button className={cx('btn_delete')}>
+                                                <MdDeleteForever />
+                                            </button>
+                                            <br />
+                                            <Link className={cx('detail_post')} to={`/DetailPost/${post.id}`}>
+                                                Xem  <BiSolidChevronsRight />
+                                            </Link>
+                                        </div>
+                                    </div>
+                                ),
+                        ),
+                    )}
             </div>
         </div>
     );

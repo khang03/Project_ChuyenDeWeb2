@@ -3,7 +3,7 @@ import style from './Notification.module.scss';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import TimeUp from '~/components/TimeUp';
-import { BiHeart} from 'react-icons/bi';
+import { BiHeart } from 'react-icons/bi';
 
 function Notification() {
     const cx = classNames.bind(style);
@@ -69,28 +69,33 @@ function Notification() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('tittle_page')}>Thông báo</div>
-            {notifications.map((item) => (
-                <div className={cx('wr_notification')} key={item.id}>
-                    {userComment.map(user =>
-                        user.id === item.user_id_send ? (
-                            <div className={cx('wr_notification')} key={user.id}>
-                                <div className={cx('wr_img')}>
-                                    <img className={cx('img_user')} src={user.avatar} alt="" />
-                                </div>
-                                <div className={cx('content_notification')}>
-                                    <div className={cx('user_id')}>
-                                        <div className={cx('id')}>{user.username}</div>
-                                        <div className={cx('time')}><TimeUp time={item.createdAt} /></div>
+            {notifications.map(
+                (item) =>
+                    item.role === 0 && (
+                        <div className={cx('wr_notification')} key={item.id}>
+                            {userComment.map((user) =>
+                                user.id === item.user_id_send ? (
+                                    <div className={cx('wr_notification')} key={user.id}>
+                                        <div className={cx('wr_img')}>
+                                            <img className={cx('img_user')} src={user.avatar} alt="" />
+                                        </div>
+                                        <div className={cx('content_notification')}>
+                                            <div className={cx('user_id')}>
+                                                <div className={cx('id')}>{user.username}</div>
+                                                <div className={cx('time')}>
+                                                    <TimeUp time={item.createdAt} />
+                                                </div>
+                                            </div>
+                                            <div className={cx('content')}>{item.message}</div>
+                                        </div>
                                     </div>
-                                    <div className={cx('content')}>{item.message}</div>
-                                </div>
-                            </div>
-                        ) : (
-                            <></>
-                        ),
-                    )}
-                </div>
-            ))}
+                                ) : (
+                                    <></>
+                                ),
+                            )}
+                        </div>
+                    ),
+            )}
         </div>
     );
 }

@@ -45,6 +45,7 @@ class LikeController {
           message: `Đã thích bài viết của bạn. ${post.content} `,
           post_id: post_id, // Liên kết đến bài viết
           user_id_send: user_id,
+          role: 0,
         });
         res.status(200).json({
           message: "Comment added and notification sent",
@@ -63,7 +64,6 @@ class LikeController {
       .then((likes) => res.json(likes))
       .catch((err) => res.status(500).json(err));
 
-
     // Lấy thông tin bài viết (để lấy owner của bài viết)
     const post = await dbModel.Post.findByPk(post_id);
 
@@ -72,7 +72,7 @@ class LikeController {
     }
 
     const postOwnerId = post.user_id; // Chủ bài viết
-    
+
     dbModel.Notification.destroy({
       where: { user_id: postOwnerId, post_id: post_id, user_id_send: user_id },
     });
