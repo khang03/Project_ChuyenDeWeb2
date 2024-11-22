@@ -70,7 +70,7 @@ class FriendController {
             res.status(500).json({ message: error.message });
         }
     }
-
+ // chấp nhận bạn bè 
     async updateStatusFrShip(req, res) {
         const { userid_1, userid_2 } = req.params
         const {status} = req.body
