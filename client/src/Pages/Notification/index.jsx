@@ -63,34 +63,80 @@ function Notification() {
 
         fetchNotifications();
     }, [userId.id]);
-    console.log(notifications);
 
+        const fetchFrShip =  (id1, id2) => {
+            try{
+                  axios.put(`http://localhost:8080/friend/${id1}/${id2}`,{
+                    
+                    status: 1,
+                  })
+                  
+            }catch{
+                console.log("lỗi");
+                
+            }
+        }
     return (
         <div className={cx('wrapper')}>
             <div className={cx('tittle_page')}>Thông báo</div>
             {notifications.map((item) => (
-                <div className={cx('wr_notification')} key={item.id}>
-                    {userComment.map(user =>
-                        user.id === item.user_id_send ? (
-                            <div className={cx('wr_notification')} key={user.id}>
-                                <div className={cx('wr_img')}>
-                                    <img className={cx('img_user')} src={user.avatar} alt="" />
-                                </div>
-                                <div className={cx('content_notification')}>
-                                    <div className={cx('user_id')}>
-                                        <div className={cx('id')}>{user.username}</div>
-                                        <div className={cx('time')}><TimeUp time={item.createdAt} /></div>
+                item.role === 2 ? (
+                    < div className = { cx('wr_notification') } key = { item.id } >
+                    {
+                        userComment.map(user =>
+                            user.id === item.user_id_send ? (
+                                <div className={cx('wr_notification')} key={user.id}>
+                                    <div className={cx('wr_img')}>
+                                        <img className={cx('img_user')} src={user.avatar} alt="" />
                                     </div>
-                                    <div className={cx('content')}>{item.message}</div>
+                                    <div className={cx('content_notification')}>
+                                        <div className={cx('user_id')}>
+                                            <div className={cx('id')}>{user.username}</div>
+                                            <div className={cx('time')}><TimeUp time={item.createdAt} /></div>
+                                        </div>
+                                        <div className={cx('content')}>{item.message}</div>
+                                    </div>
+                                    <button style={{color: "red"}}>Hủy</button>
+
+                                    <button onClick={() => fetchFrShip(user.id, item.user_id)}>Chấp nhận</button>
                                 </div>
-                            </div>
-                        ) : (
-                            <></>
-                        ),
-                    )}
-                </div>
-            ))}
-        </div>
+                            ) : (
+                                <></>
+                            ),
+                        )
+                    }
+                        </div>
+    
+                ): item.role === 0 && (
+                    < div className = { cx('wr_notification') } key = { item.id } >
+                    {
+                        userComment.map(user =>
+                            user.id === item.user_id_send ? (
+                                <div className={cx('wr_notification')} key={user.id}>
+                                    <div className={cx('wr_img')}>
+                                        <img className={cx('img_user')} src={user.avatar} alt="" />
+                                    </div>
+                                    <div className={cx('content_notification')}>
+                                        <div className={cx('user_id')}>
+                                            <div className={cx('id')}>{user.username}</div>
+                                            <div className={cx('time')}><TimeUp time={item.createdAt} /></div>
+                                        </div>
+                                        <div className={cx('content')}>{item.message}</div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <></>
+                            ),
+                        )
+                    }
+                        </div>
+                )
+
+          
+
+    ))
+}
+        </div >
     );
 }
 

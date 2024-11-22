@@ -5,6 +5,9 @@ import { BiImageAdd, BiX } from 'react-icons/bi';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import TimeUp from '~/components/TimeUp';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+
 
 const cx = classNames.bind(style);
 function Chat() {
@@ -48,6 +51,46 @@ function Chat() {
         fetchUserData();
     }, []);
 
+    // hàm xử lí gửi vị trí  
+    const [messages, setMessages] = useState([]);
+    const [location, setLocation] = useState('')
+    const handleLocation = async () => {
+
+        try {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        setLocation(`https://www.google.com/maps?q=${latitude},${longitude}`)
+
+
+                    },
+                    (error) => {
+                        alert("Không thể lấy vị trí: " + error.message);
+                    }
+                );
+            } else {
+                alert("Trình duyệt của bạn không hỗ trợ Geolocation!");
+            }
+            // hàm gửi tin nhắn 
+            const response = await axios.post('http://localhost:8080/chat', {
+                sender_id: userId.id,
+                receiver_id: userChat.id, // lấy id người dùng khi click vào 
+                message_content: location,
+                message_img: '1.png',
+            })
+            setAllMess((preMess) => [...preMess, response.data])
+        } catch (error) {
+            console.error('Lỗi khi gửi tin nhắn:', error);
+            console.log(userId.id, userChat.id, content, '1.png');
+
+            alert('Có lỗi xảy ra khi gửi tin nhắn.');
+        }
+
+    };
+
+    
+
     //Lấy dữ liệu tất cả tin nhắn
     useEffect(() => {
         const fetchMessage = async () => {
@@ -60,7 +103,7 @@ function Chat() {
             }
         };
         fetchMessage();
-    }, [allMess]);
+    }, [allMess.length]);
 
     //hàm gửi tin nhắn
     const sendMessage = async () => {
@@ -82,7 +125,7 @@ function Chat() {
         }
     };
 
-    
+
     // const sortUser = [...user].sort((a, b) => {
     //     if (lastMessagedUser) {
     //         if (a.id === lastMessagedUser.id) return -1;
@@ -107,7 +150,7 @@ function Chat() {
 
     useEffect(() => {
         getUser();
-    }, [userId.id]);
+    }, []);
 
     //Lấy thông tin id người dùng để gửi tới họ
 
@@ -135,6 +178,34 @@ function Chat() {
         }
     };
 
+    // hàm xử lí lấy vị trí người dùng khi nhấn nút 
+
+    // const CheckInButton = ({ onSendLocation }) => {
+    //     const [loading, setLoading] = useState(false);
+    //     const [error, setError] = useState(null);
+
+    //     // Hàm xử lý lấy vị trí của người dùng khi nhấn nút
+    //     const handleCheckIn = () => {
+    //         setLoading(true);
+    //         if (navigator.geolocation) {
+    //             navigator.geolocation.getCurrentPosition(
+    //                 (position) => {
+    //                     const { latitude, longitude } = position.coords;
+    //                     setLoading(false);
+    //                     onSendLocation(latitude, longitude);  // Gửi vị trí
+    //                 },
+    //                 (err) => {
+    //                     setLoading(false);
+    //                     setError('Không thể lấy vị trí.');
+    //                 }
+    //             );
+    //         } else {
+    //             setLoading(false);
+    //             setError('Trình duyệt không hỗ trợ Geolocation.');
+    //         }
+    //     };
+    // };
+
     //tạo useState tìm user chat
     const [inputFind, SetInputFind] = useState('');
     //Tìm user by name
@@ -152,9 +223,17 @@ function Chat() {
     const handleDeleteInputFind = () => {
         SetInputFind('');
     };
+     // hàm xách nhận link goggle mad 
+    const isValidUrl = (string) => {
+        try {
+          new URL(string); // Sử dụng constructor URL để xác thực
+          return true;
+        } catch (error) {
+          return false;
+        }
+      };
 
     const filteredUsers = user.filter((user) => user.username.toLowerCase().includes(inputFind.toLowerCase()));
-    console.log(filteredUsers);
 
     return (
         <div className={cx('wrapper')}>
@@ -226,9 +305,15 @@ function Chat() {
                                     <div className={cx('time_send')}>
                                         <TimeUp time={item.createdAt} />
                                     </div>
-                                    <div className={cx('my_mess')}>
+                                    
+                                    <div className={cx('my_mess')}> 
                                         <div className={cx('content_my_mess')} id={item.id}>
-                                            {item.message_content}
+                                            {isValidUrl(item.message_content) ? (
+                                                <a href={item.message_content} target="_blank" rel="noopener noreferrer">{item.message_content}</a>
+                                                
+                                            ):(
+                                                item.message_content
+                                            )}
                                         </div>
                                     </div>
                                 </>
@@ -265,6 +350,22 @@ function Chat() {
                                     <BiImageAdd className={cx('img_icon')} />
                                 </label>
                             </div>
+                            
+
+                            <button onClick={handleLocation}// tạo nút mad 
+                                style={{
+                                    padding: '5px',
+                                    border: 'none',
+                                    borderRadius: '5px',
+                                    color: 'black',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                            </button>
+
                             <button onClick={sendMessage}>Gửi</button>
                         </div>
                     </div>

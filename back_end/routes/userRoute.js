@@ -8,7 +8,7 @@ const userRouter = express.Router();
 userRouter.get("/", userController.index);
 userRouter.get("/search/:username", userController.show);
 userRouter.get("/:id", userController.showById);
-// userRouter.post("/", userController.register);
+userRouter.post("/", userController.register);
 // userRouter.get("/:username", userController.show);
 userRouter.get("/userId/:id", userController.getUserById);
     userRouter.post("/store", userController.register);
