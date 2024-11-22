@@ -49,6 +49,34 @@ function AdminPage() {
         setReportPost(true);
     };
 
+    //Lấy dữ liệu id người dùng khi đăng nhập
+    const [error, setError] = useState(null);
+    const [userId, setUserId] = useState({});
+
+    //Lấy token người dùng
+    const token = localStorage.getItem('authToken');
+
+    //Lấy dữ liệu userId khi đăng nhập vào
+    useEffect(() => {
+        const fetchUserData = async () => {
+            if (token) {
+                try {
+                    const response = await axios.get('http://localhost:8080/', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setUserId(response.data);
+                } catch (err) {
+                    setError('Không thể lấy thông tin người dùng');
+                }
+            } else {
+                setError('Bạn chưa đăng nhập');
+            }
+        };
+        fetchUserData();
+    }, []);
+
     //useEffect để lấy tất cả user
     useEffect(() => {
         const fetchUser = async () => {
@@ -100,6 +128,29 @@ function AdminPage() {
             console.error('Failed to delete post:', error);
         }
     };
+
+    //Tạo hàm để xoá bài viết trong report
+    const handleDeletePostReport = async (idPost, user_id, user_id_send, message) => {
+        try {
+            axios.post('http://localhost:8080/notification/', {
+                user_id: user_id,
+                user_id_send: user_id_send,
+                post_id: idPost,
+                message: `Chúng tôi đã phát hiện bài viết của bạn có hành vi ${message}. Mong bạn giữ gìn văn hoá tốt đẹp trên nền tảng của chúng tôi.`,
+                role: 0,
+            });
+            const response = await axios.delete(`http://localhost:8080/posts/delete/${idPost}`);
+
+            console.log(user_id_send);
+
+            setPosts((prevPost) => {
+                return prevPost.filter((post) => post.id !== idPost);
+            });
+        } catch (error) {
+            console.error('Failed to delete post:', error);
+        }
+    };
+
     //Tạo hàm để xoá bình luận
     const handleDeleteComment = async (idComment) => {
         try {
@@ -125,10 +176,10 @@ function AdminPage() {
     const handleDeteleNoti = (id) => {
         try {
             axios.delete(`http://localhost:8080/notification/delete/${id}`);
-            alert("Xoá thành công")
+            alert('Xoá thành công');
             setReport((prevReport) => {
                 return prevReport.filter((report) => report.id !== id);
-            })
+            });
         } catch {
             console.log('không thể xoá');
         }
@@ -310,16 +361,24 @@ function AdminPage() {
                                         </div>
 
                                         <div className={cx('action_post')}>
-                                            <button
-                                                onClick={() => handleDeteleNoti(report.id)}
-                                                className={cx('btn_delete')}
-                                            >
-                                                <MdDeleteForever />
-                                            </button>
-                                            <br />
                                             <Link className={cx('detail_post')} to={`/DetailPost/${post.id}`}>
                                                 Xem <BiSolidChevronsRight />
                                             </Link>
+                                            <br />
+
+                                            <button
+                                                onClick={() =>
+                                                    handleDeletePostReport(
+                                                        post.id,
+                                                        post.user_id,
+                                                        userId.id,
+                                                        report.message,
+                                                    )
+                                                }
+                                                className={cx('btn_delete')}
+                                            >
+                                                Xoá bài viết
+                                            </button>
                                         </div>
                                     </div>
                                 ),
