@@ -1,0 +1,93 @@
+.wrapper{
+    width: 100%;
+    height: 100%;
+    .head_inp{
+        width: 100%;
+        height: 100px;
+        padding: 30px 30px;
+        .wr_inp{
+            width: 100%;
+            height: 50px;
+            border: 1px solid #9d9d9d;
+            border-radius: 15px;
+            background-color: #fafafa;
+            display: flex;
+
+            .wr_icon_search{
+                width: 10%;
+                height: 100%;
+            }
+            .wr_search{
+                width: 90%;
+                height: 100%;
+                input{
+                    width: 100%;
+                    height: 100%;
+                    border: #9d9d9d00;
+                    background-color: #9d9d9d00;
+                    font-size: 18px;
+
+                }
+                input:focus{
+                    outline: none;
+                }
+            }
+
+            .wr_icon_search{
+                font-size: 30px;
+                padding: 5px 10px;
+                color: #9d9d9d;
+            }
+        }
+    }
+
+    .tittle_result{
+        padding: 0 30px;
+        color: #585858;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .wr_result{
+        width: 100%;
+        padding: 0 30px;
+        margin-top: 30px;
+        .result{
+            height: 100px;
+            width: 100%;
+            display: flex;
+            padding: 10px 0;
+            .wr_img{
+                width: 10%;
+                height: 100%;
+                img{
+                    height: 50px;
+                    width: 50px;
+                    border-radius: 50%;
+                }
+            }
+            .wr_info_user_find{
+                width: 90%;
+                height: 100%;
+                padding: 0 20px;
+                position: relative;
+                .user_id{
+                    font-weight: bold;
+                }
+                .user_name{
+                    color: #9d9d9d;
+                }
+            }
+            .wr_info_user_find::before{
+                content: '';
+                width: 100%;
+                height: 1px;
+                position: absolute;
+                border-bottom: 1px solid #9d9d9d;
+                bottom: 0;
+                right: 0;
+
+            }
+        }
+    }
+}

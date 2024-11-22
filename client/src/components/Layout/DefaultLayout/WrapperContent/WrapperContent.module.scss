@@ -1,0 +1,25 @@
+.wrapper-content{
+    height: 100%;
+    width: 100%;
+    position: relative;
+
+}
+
+.div-content{
+    width: 600px;
+    height: 100%;
+    background-color: #fff;
+    margin: 0 auto;
+    border: 1px solid #a9a6a6;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    scrollbar-width: none; 
+    overflow: auto;
+    box-shadow: 0px 0px 5px #8d8c8c;
+
+}
+.div-content::-webkit-scrollbar {
+    display: none; /* Ẩn thanh cuộn trên Chrome và Safari */
+  }
+
+

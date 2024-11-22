@@ -1,0 +1,94 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+    .title_changepass {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border-bottom: 1px solid #949495;
+    }
+    .wrapper {
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+        padding: 0 20px;
+        .wr_edit_item {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            padding-top: 20px;
+            .my_name {
+                width: 90%;
+                height: 100%;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #636266;
+            }
+            .my_des {
+                width: 100%;
+                height: 100%;
+                display: block;
+                border-bottom: 1px solid #636266;
+                padding-bottom: 20px;
+                input {
+                    outline: none;
+                    border: 0;
+                }
+            }
+            .my_id {
+                width: 100%;
+                height: 100%;
+                border-bottom: 1px solid #636266;
+                padding-bottom: 20px;
+                input {
+                    outline: none;
+                    border: 0;
+                }
+            }
+            .my_status {
+                width: 100%;
+                height: 100%;
+                padding-bottom: 20px;
+                display: flex;
+                p {
+                    width: 90%;
+                    height: 100%;
+                    padding-top: 10px;
+                }
+                .status {
+                    width: 10%;
+                    height: 100%;
+                }
+            }
+            .my_avatar {
+                width: 10%;
+                height: 100%;
+                img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                }
+            }
+        }
+        .btn_confirm {
+            width: 100%;
+            height: 50px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            align-content: center;
+            button {
+                width: 100%;
+                height: 100%;
+                border-radius: 15px;
+                background-color: #000000;
+                color: #fff;
+            }
+        }
+        .btn_confirm:hover {
+            cursor: pointer;
+        }
+    }
+}

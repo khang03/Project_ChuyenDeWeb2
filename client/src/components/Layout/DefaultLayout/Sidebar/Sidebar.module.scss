@@ -1,0 +1,23 @@
+.sidebar {
+    width: 8%;
+    height: 100%;
+    background-color: #fff;
+    // border: 1px solid #333;
+    position: fixed;
+    z-index: 1;
+}
+
+.list_nav {
+    list-style: none;
+    text-align: center;
+    height: 80%;
+    align-content: center;
+    font-size: 35px;
+    
+}
+.item_nav {
+    line-height: 70px;
+    
+}
+
+
