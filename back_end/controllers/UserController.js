@@ -66,6 +66,42 @@ class UserController {
           });
       });
   }
+
+  async ChangPass(req, res) {
+    const { id: userId } = req.params; // Match the route parameter
+    const { old_password, new_password } = req.body; // Extract old and new passwords
+  
+    try {
+      // Log for debugging
+      console.log("User ID:", userId);
+  
+      // Find the user by ID
+      const user = await dbModel.User.findOne({ where: { id: userId } });
+  
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+  
+      // Check old password
+      const isPasswordValid = await bcrypt.compare(old_password, user.password);
+      if (!isPasswordValid) {
+        return res.status(400).json({ error: "Old password is incorrect" });
+      }
+  
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(new_password, 10);
+  
+      // Update the user's password
+      await user.update({ password: hashedPassword });
+  
+      // Success response
+      return res.json({ message: "Password changed successfully" });
+    } catch (err) {
+      // Handle unexpected errors
+      console.error("Error changing password:", err);
+      return res.status(500).json({ error: "An error occurred", details: err.message });
+    }
+  }
   //-------------------------------------------------------------------------------------------------------
 
   //[GET] lay user theo id
