@@ -13,6 +13,7 @@ module.exports = {
     const hashedPassword4 = await bcrypt.hash('456', saltRounds);
 
     await queryInterface.bulkInsert('Users', [
+      
       {
         name: 'Tuấn',
         username: 'tuan01',

@@ -1,0 +1,134 @@
+.wrapper {
+    width: 100%;
+    height: 100%;
+    padding: 0 20px;
+    .header_admin {
+        width: 100%;
+        height: 60px;
+        border-bottom: 1px solid #c0c0c0;
+        .list_category {
+            padding: 0 20px;
+            height: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: space-evenly;
+
+            .item_category {
+                color: #919191;
+                text-align: center;
+                height: 100%;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                margin-right: 20px;
+            }
+           
+            .item_category:hover {
+                cursor: pointer;
+            }
+        }
+        .list_category::-webkit-scrollbar {
+            display: none;
+        }
+    }
+    .wrapper_content {
+        width: 100%;
+        height: fit-content;
+        padding: 20px 0;
+        .content_User {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            border-bottom: 1px dotted #c0c0c0;
+            .avatar {
+                width: 20%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img {
+                    height: 60px;
+                    width: 60px;
+                    border-radius: 50%;
+                }
+            }
+            .info_user {
+                width: 60%;
+                height: 100%;
+                padding: 20px 0;
+                .name {
+                    color: #585858;
+                }
+            }
+
+            .action_user {
+                width: 20%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                .btn_delete {
+                    background-color: #ffffff00;
+                    border: 0;
+                    color: #c62d2d;
+                    font-size: 25px;
+                }
+            }
+        }
+        .content_Post {
+            width: 100%;
+            min-height: 100px;
+            display: flex;
+            border-bottom: 1px dotted #757474;
+
+            .info_user {
+                width: 40%;
+                height: 100%;
+                padding: 20px 0;
+                line-height: 30px;
+                .content {
+                    color: #585858;
+                }
+            }
+            .image_post {
+                width: 40%;
+                height: 100%;
+                overflow-x: auto;
+                display: flex;
+                padding: 5px 0;
+                img {
+                    width: 100px;
+                    height: auto;
+                    margin-right: 10px;
+                    border-radius: 5px;
+                }
+            }
+            .image_post::-webkit-scrollbar {
+                display: none;
+            }
+
+            .action_post {
+                width: 20%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                padding: 10px 0;
+                .btn_delete {
+                    background-color: #ffffff00;
+                    border: 0;
+                    color: #c62d2d;
+                    font-size: 15px;
+                    font-weight: bold;
+                    margin-top: 40px;
+
+                }
+                .detail_post{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}

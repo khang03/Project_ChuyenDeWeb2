@@ -11,7 +11,7 @@ const server = http.createServer(app);
 
 
 // Allow all origins
-app.use(cors()); 
+app.use(cors());
 
 // Middleware để xử lý body (JSON)
 app.use(bodyParser.json());
