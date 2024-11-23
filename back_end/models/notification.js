@@ -42,11 +42,10 @@ module.exports = (sequelize, DataTypes) => {
           key: "id",
         },
       },
-      role: DataTypes.INTEGER,
-      is_read: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
+      role: {
+        type: DataTypes.INTEGER,
+
+      }
     },
 
     {

@@ -13,7 +13,6 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       user_id: {
-        allowNull:false,
         type: Sequelize.INTEGER
       },
       user_id_send: {

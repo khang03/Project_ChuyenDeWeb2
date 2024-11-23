@@ -61,11 +61,11 @@ class FriendController {
         
         try {
             const friendStatus = await dbModel.Friendship.findOne({
-                where: { userid_1: id, userid_2: friendId },
-                attributes: ['status']
+            where: { userid_1: id, userid_2: friendId },
+            attributes: ['status']
             });
             if (friendStatus) {
-                res.status(200).json({ status: friendStatus.status });
+            res.status(200).json({ status: friendStatus.status });
             } 
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -77,25 +77,11 @@ class FriendController {
 
         const { id, friendId } = req.body;
         try {
-            // Xác định conversation_id
-            const conversation_id = id < friendId
-            ? `${id}_${friendId}`
-            : `${friendId}_${id}`;
-
             const newRequest = await dbModel.Friendship.create({
             userid_1: id,
             userid_2: friendId,
             status: 0,
-            room: conversation_id
             });
-
-            dbModel.Notification.create({
-                message: 'Đã gửi yêu cầu kết bạn.',
-                user_id: friendId,
-                post_id: 1,
-                user_id_send: id,
-                role: 2
-            })
             res.status(201).json(newRequest);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -122,22 +108,5 @@ class FriendController {
             res.status(500).json({ message: error.message });
         }
     }
-
-     // chấp nhận bạn bè 
-    async updateStatusFrShip(req, res) {
-        const { userid_1, userid_2 } = req.params
-        const {status} = req.body
-        try{
-
-            dbModel.Friendship.update({ status: status }, { where: { userid_1, userid_2 } })
-            res.status(201).json({ message: 'success' });
-
-        }catch{
-            console.log("sai");
-
-        }
-    }
-
-
 }
 module.exports = new FriendController();
