@@ -16,7 +16,23 @@
             display: flex;
             justify-content: space-between;
         }
-        
+        .user_chat {
+            display: flex;
+            padding: 10px 0 10px 20px;
+            .div_avatar {
+            }
+
+            .name_user {
+                padding: 0px 20px;
+                line-height: 30px;
+                .span_name_user {
+                    font-weight: bold;
+                }
+                .span_time_send_mess {
+                    color: #9c9393;
+                }
+            }
+        }
         .user_chat:hover {
             background-color: #e1dfdf;
             cursor: pointer;
@@ -183,11 +199,6 @@
                         height: 20px;
                     }
                 }
-
-                .check-in-container {
-                    text-align: center;
-                    margin-bottom: 20px;
-                }
             }
         }
 
@@ -217,21 +228,4 @@
     text-align: center;
     color: #9c9393;
     font-size: 10px;
-}
-
-.btnSendMess:disabled{
-    background-color: #ccc; /* Màu nền khi nút bị vô hiệu hóa */
-  color: #666; /* Màu chữ khi nút bị vô hiệu hóa */
-  cursor: not-allowed; /* Con trỏ chuột cấm */
-  opacity: 0.6; /* Mờ nút */
-}
-
-.iconLocation {
-        width: 5%;
-        height: 100%;
-        background-color: #00000000;
-        border: 0;
-        color: #046d58;
-        font-weight: bold;
-    
 }

@@ -32,6 +32,7 @@ const navigate = useNavigate()
 
             // Lưu token vào localStorage hoặc cookie nếu cần thiết
             localStorage.setItem('authToken', token);
+            localStorage.setItem("userId", userId);  // Lưu userId
 
             // Hiển thị thông báo thành công
             setMessage(`Đăng nhập thành công, chào ${loggedUsername}!`);

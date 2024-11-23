@@ -48,7 +48,7 @@ class CommentController {
         const notification = await dbModel.Notification.create({
           user_id: postOwnerId, // Gửi thông báo cho người sở hữu bài viết
           message: `Đã bình luận về bài viết của bạn: ${comment_content}`,
-          post_id: post_id, // Liên kết đến bài viết
+          post_id: 10, // Liên kết đến bài viết
           user_id_send: user_id
         });
         res.status(200).json({ message: 'Comment added and notification sent', comment_content, notification });

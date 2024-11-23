@@ -36,7 +36,7 @@ const FriendButton = ({id , friendId}) => {
         }
     }
 
-    // Xử lý  bạn bè
+    // Xử lý hủy bạn bè
     const handleRemoveFriend = async () => {
     
     }
@@ -51,7 +51,6 @@ const FriendButton = ({id , friendId}) => {
             console.error("Error sending friend request", error);
         }
     }
-
     return (
         <>
             {status === 0 && (
@@ -61,7 +60,7 @@ const FriendButton = ({id , friendId}) => {
             )}
             {status === 1 && (
                 <div className={'btn_title_edit'} onClick={handleRemoveFriend}>
-                    Bạn Bè 
+                    Hủy bạn bè
                 </div>
             )}
             {status === undefined && (
@@ -69,7 +68,6 @@ const FriendButton = ({id , friendId}) => {
                     Thêm bạn bè
                 </div>
             )}
-            
         </>
     );
 };

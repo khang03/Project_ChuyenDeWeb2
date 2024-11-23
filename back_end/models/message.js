@@ -25,11 +25,22 @@ module.exports = (sequelize, DataTypes) => {
   }
   Message.init(
     {
-      sender_id: DataTypes.INTEGER,
-      receiver_id: DataTypes.INTEGER,
+      sender_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        }
+      },
+      receiver_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        }
+      },
       message_content: DataTypes.TEXT,
       message_img: DataTypes.STRING,
-      room: DataTypes.STRING,
     },
     {
       sequelize,
