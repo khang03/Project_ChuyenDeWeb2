@@ -22,7 +22,7 @@ function Routes(app) {
   app.use("/likes", likeRouter);
   app.use("/login", authRouter)
   app.use("/friend", friendRouter)
-  app.use("/messages", messageRouter)
+  app.use("/chat", messageRouter)
   app.use("/notification", notificationRouter)
   app.post('/login', (res, req) => {
     if(req.session.userId){
@@ -40,7 +40,7 @@ function Routes(app) {
       // Truy vấn thông tin người dùng từ bảng users
       const user = await dbModel.User.findOne({
         where: { id: userId },
-        attributes: ['id', 'username', 'email', 'name', 'avatar','bio','role'], // Chọn các cột bạn cần
+        attributes: ['id', 'username', 'email', 'name', 'avatar','bio'], // Chọn các cột bạn cần
       });
   
       if (!user) {

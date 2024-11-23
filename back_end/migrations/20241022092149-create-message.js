@@ -25,10 +25,6 @@ module.exports = {
         type: Sequelize.STRING(255),
         allowNull: false
       },
-      room: {
-        type: Sequelize.STRING(50),
-        allowNull: false
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

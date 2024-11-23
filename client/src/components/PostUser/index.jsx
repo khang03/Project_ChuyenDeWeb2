@@ -8,7 +8,6 @@ import { Button, Menu, MenuItem, Fade } from '@mui/material';
 import ModalPost from '../ModalPost';
 import { toast } from 'react-toastify';
 import TimeUp from '../TimeUp';
-import ModalReportPost from '../ModalReportPost';
 
 const cx = classNames.bind(style);
 
@@ -29,10 +28,6 @@ const PostUser = ({ isActiveEdit, setPosts, user, item, index }) => {
     const [showModal, setShowModal] = useState(false);
     const [openMenus, setOpenMenus] = useState({});
     const [selectedModal, setSelectedModal] = useState({});
-
-    //Tạo useState để render ModalReport
-
-    const [modalReport, setModalReport] = useState(false);
 
     const handleClick = (id, event) => {
         setOpenMenus((pre) => ({
@@ -163,28 +158,19 @@ const PostUser = ({ isActiveEdit, setPosts, user, item, index }) => {
         checkLikeStatus();
     }, [user, item]);
 
-    //Tạo hàm set trạng thái render ModalReport
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const handleClickReport = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleCloseReport = () => {
-        setAnchorEl(null);
-        setModalReport(true);
-    };
+    console.log(item);
 
     return (
         <>
             <div className={cx('post')} key={item.id}>
                 <>
                     <div className={cx('wr_startus_post')}>
-                        <div className={cx('img_startus')} id={item.oneUser.id}>
+                        <div className={cx('img_startus')}>
                             <img alt="" src={item.oneUser.avatar} />
                         </div>
                         <div className={cx('wr_des_post')}>
                             <div className={cx('user_id')}>
-                                <p>{item.oneUser.username}</p>
+                                <p>{item.oneUser.username}</p>{' '}
                                 <span>
                                     <TimeUp time={item.createdAt} />
                                 </span>
@@ -193,34 +179,6 @@ const PostUser = ({ isActiveEdit, setPosts, user, item, index }) => {
                                 <p>{item.content}</p>
                             </div>
                         </div>
-
-                        {user.id !== item.user_id && (
-                            <div className={cx('menu')}>
-                                <Button
-                                    id="fade-button"
-                                    aria-controls={open ? 'fade-menu' : undefined}
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
-                                    onClick={handleClickReport}
-                                    className={cx('btn_menu')}
-                                >
-                                    ...
-                                </Button>
-                                <Menu
-                                    id="fade-menu"
-                                    MenuListProps={{
-                                        'aria-labelledby': 'fade-button',
-                                    }}
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleCloseReport}
-                                    TransitionComponent={Fade}
-                                >
-                                    <MenuItem onClick={handleCloseReport}>Báo cáo bài viết ! </MenuItem>
-                                </Menu>
-                                {modalReport && <ModalReportPost setModalreport={setModalReport} user={user} item={item} />}
-                            </div>
-                        )}
 
                         {isActiveEdit && (
                             <div className={cx('menu')}>

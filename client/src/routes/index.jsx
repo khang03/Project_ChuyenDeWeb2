@@ -10,8 +10,6 @@ import HeaderOnlyLayout from '~/components/Layout/HeaderOnlyLayout';
 import Register from '~/Pages/Register';
 import Login from '~/Pages/Login';
 import Changpass from '~/Pages/ChangePass';
-import AdminPage from '~/Pages/Admin';
-import { DefaultLayout } from '~/components/Layout';
 
 const publicRoutes = [
     { path: '/', component: Home },
@@ -24,7 +22,6 @@ const publicRoutes = [
     { path: '/ChangPass/:id', component: Changpass },
     { path: '/Register/', component: Register, layout: null },
     { path: '/Login', component: Login, layout: null },
-    { path: '/Admin', component: AdminPage, },
 ];
 
 const privateRoutes = [];

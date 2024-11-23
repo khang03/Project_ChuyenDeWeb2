@@ -1,216 +1,260 @@
 import classNames from 'classnames/bind';
 import style from './Chat.module.scss';
 import { Avatar } from '@mui/material';
-import { BiImageAdd } from 'react-icons/bi';
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { BiImageAdd, BiX } from 'react-icons/bi';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import Authentication from '~/functions/Authentication.jsx';
-import MessageUser from '~/components/MessagePage/MessageUser';
-
-import io from 'socket.io-client';
 import TimeUp from '~/components/TimeUp';
-
-const socket = io('http://localhost:8080');
 
 const cx = classNames.bind(style);
 function Chat() {
-    // Khai báo state
-    const [userLogin,setUserLogin] = useState();
-    const [listFriend,setlistFriend] = useState([]);
-    const [room, setRoom] = useState('');
-    const [choosenFriend, setChoosenFriend] = useState();
-    const [messages, setMessages] = useState([]);
-    const [inputMess, setInputMess] = useState('');
-    
-    
-    //Xác thực người dùng để lấy thông tin đăng nhập 
-    // Và sau đó lấy luôn danh sách bạn bè   
-    useEffect( ()  =>  {
-         async function getUserLogin() {
-            const dataUserLogin = await Authentication();
-            if (dataUserLogin === 0) {
-                console.log('Cần login lại');
-            }else{ 
-                const dataListFriend = await axios.get(`http://localhost:8080/friend/getListFriend/${dataUserLogin.id}`)
-                setUserLogin(dataUserLogin)
-                setlistFriend(dataListFriend.data);               
-            }   
-         }
+    //Tạo useState lấy các user
+    const [user, setUser] = useState([]);
 
-         getUserLogin();
-    },[])
-    
-    // Nhận dữ liệu tin nhắn thông qua socket
+    //Tạo useState gửi tin nhắn
+    const [receiverId, setReceiverId] = useState('');
+    const [content, setContent] = useState('');
+
+    //Tạo useState lấy user để chat
+    const [userChat, setUserChat] = useState({});
+
+    //Tạo useState để lấy tất cả tin nhắn
+    const [allMess, setAllMess] = useState([]);
+
+    //Lấy dữ liệu id người dùng khi đăng nhập
+    const [error, setError] = useState(null);
+    const [userId, setUserId] = useState({});
+    //Lấy token người dùng
+    const token = localStorage.getItem('authToken');
+
+    //Lấy dữ liệu userId khi đăng nhập vào
     useEffect(() => {
-        socket.on('receiveMessage', (message) => {
-            setMessages((prev) => [...prev, message]);
-        });
-        return () => {
-            socket.off('receiveMessage');
-        }
-    }, [room]);
-  
-
-    //Chọn bạn , lấy phòng , lấy message
-    const handleChooseFriend  = async (friend) => {
-        console.log(friend);
-        setRoom(friend.room);
-        setChoosenFriend(friend);
-
-        socket.emit('join_room', {roomId: friend.room, userId: userLogin.id});
-
-        // Lấy dữ liệu tin nhắn
-        axios.get(`http://localhost:8080/messages/getmessagebyroom`,{
-        params: { room: friend.room }
-        })
-        .then(response => {
-            if (response.data.length > 0) {
-                // Set lại tin nhắn của phòng mới
-                setMessages(response.data);
-            }else{
-                setMessages([])
-                console.log('Tài khoản này không có dữ liệu tin nhắn');
-            }
-        })
-        .catch(error => {
-            console.log('Lỗi hệ thống', error);
-        })
-    }
-    
-    
-    //Xử lý gửi tin nhắn
-    const handleSendMessage = (e) => {
-        e.preventDefault();
-        console.log('nhấn gửi: dòng 88');
-
-        // formData
-        const padload = {
-            messageContent: inputMess,
-            receiverId: choosenFriend.id,
-            senderId: userLogin.id,
-            room: room
-        }
-        // Phát tín hiệu gửi tin 
-        socket.emit('sendMessage',padload)
-        // setInput lại rỗng
-        setInputMess('');
-    }   
- 
-    // hàm xử lí gửi vị trí  
-    // const [messages, setMessages] = useState([]);
-    const [location, setLocation] = useState('')
-    console.log(location);
-    
-    const handleLocation = async () => {
-
-        try {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        setLocation(`https://www.google.com/maps?q=${latitude},${longitude}`)
-                    },
-                    (error) => {
-                        alert("Không thể lấy vị trí: " + error.message);
-                    }
-                );
+        const fetchUserData = async () => {
+            if (token) {
+                try {
+                    const response = await axios.get('http://localhost:8080/', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+                    setUserId(response.data);
+                } catch (err) {
+                    setError('Không thể lấy thông tin người dùng');
+                }
             } else {
-                alert("Trình duyệt của bạn không hỗ trợ Geolocation!");
+                setError('Bạn chưa đăng nhập');
             }
-            // hàm gửi tin nhắn 
-            const padload = {
-                senderId: userLogin.id,
-                receiverId: choosenFriend.id, // lấy id người dùng khi click vào 
-                messageContent: location,
-                room: room,
-                
+        };
+        fetchUserData();
+    }, []);
+
+    //Lấy dữ liệu tất cả tin nhắn
+    useEffect(() => {
+        const fetchMessage = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/chat/all');
+
+                setAllMess(response.data);
+            } catch (err) {
+                console.log('Không có dữ liệu message!');
             }
-            // phát sự kiện
-            socket.emit('sendMessage',padload)
-            // setMessages((preMess) => [...preMess, response.data])
+        };
+        fetchMessage();
+    }, [allMess]);
+
+    //hàm gửi tin nhắn
+    const sendMessage = async () => {
+        try {
+            const response = await axios.post('http://localhost:8080/chat', {
+                sender_id: userId.id,
+                receiver_id: userChat.id,
+                message_content: content,
+                message_img: '1.png',
+            });
+            setAllMess((preMess) => [...preMess, response.data]);
+            setContent('');
+            console.log(response.data);
         } catch (error) {
             console.error('Lỗi khi gửi tin nhắn:', error);
-            
+            console.log(userId.id, userChat.id, content, '1.png');
 
             alert('Có lỗi xảy ra khi gửi tin nhắn.');
         }
-
     };
 
-     // hàm xách nhận link goggle mad 
-     const isValidUrl = (string) => {
+    
+    // const sortUser = [...user].sort((a, b) => {
+    //     if (lastMessagedUser) {
+    //         if (a.id === lastMessagedUser.id) return -1;
+    //         if (b.id === lastMessagedUser.id) return 1;
+    //     }
+    //     return 0;
+    // });
+
+    //hàm lấy tất cả người dùng
+    const getUser = async () => {
         try {
-          new URL(string); // Sử dụng constructor URL để xác thực
-          return true;
-        } catch (error) {
-          return false;
+            const reponse = await axios.get('http://localhost:8080/users');
+
+            //tạo biến lọc user của mình
+            const filterMyUserId = reponse.data.filter((user) => user.id !== userId.id);
+            setUser(filterMyUserId);
+            console.log(user);
+        } catch (e) {
+            console.log(e.message);
         }
     };
+
+    useEffect(() => {
+        getUser();
+    }, [userId.id]);
+
+    //Lấy thông tin id người dùng để gửi tới họ
+
+    const getUserById = async (id) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/users/userId/${id}`);
+            setUserChat(response.data);
+            console.log(userChat);
+        } catch (e) {
+            console.log(e.message);
+        }
+    };
+
+    //-----------------------------Xử lí nhập tin nhắn---------------------------------
+
+    const [mess, setMess] = useState([]);
+
+    const handlePostSubmit = () => {
+        if (content.trim() !== '') {
+            // Thêm nội dung mới vào danh sách bài đăng và xóa nội dung đã nhập sau khi đăng
+
+            const newMess = { id: Date.now(), content: content.trim() };
+            setMess([...mess, newMess]);
+            setContent('');
+        }
+    };
+
+    //tạo useState tìm user chat
+    const [inputFind, SetInputFind] = useState('');
+    //Tìm user by name
+    // useEffect(() => {
+    //     const handleFind = async () => {
+    //         try {
+    //             const response = await axios.get(`http://localhost:8080/users/${inputFind}`);
+    //             setUser(response.data);
+    //         } catch (e) {
+    //             console.log('không tìm thấy user');
+    //         }
+    //     };
+    //     handleFind();
+    // }, [inputFind]);
+    const handleDeleteInputFind = () => {
+        SetInputFind('');
+    };
+
+    const filteredUsers = user.filter((user) => user.username.toLowerCase().includes(inputFind.toLowerCase()));
+    console.log(filteredUsers);
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('list_chat')}>
-                <div className={cx('title_chat')}>Tin nhắn</div>
+                <div className={cx('title_chat')}>
+                    <span>Tin nhắn</span> <span>{userId.username}</span>
+                </div>
+                <div className={cx('wr_find_user_chat')}>
+                    <input
+                        placeholder="Nhập username..."
+                        type="text"
+                        value={inputFind}
+                        onChange={(e) => SetInputFind(e.target.value)}
+                    />
 
-                {listFriend.map(friend => (
-                    <div className="friendItem" key={friend.id} onClick={() =>  handleChooseFriend(friend)}>
-                        <MessageUser  friend={friend}/>
-                    </div>
-                ))}
-                
+                    <button onClick={handleDeleteInputFind}>
+                        <BiX />
+                    </button>
+                </div>
+                {inputFind ? (
+                    <>
+                        {filteredUsers.map((item) => (
+                            <div className={cx('user_chat')} key={item.id} onClick={() => getUserById(item.id)}>
+                                <div className={cx('div_avatar')}>
+                                    <Avatar sx={{ width: 60, height: 60 }} className={cx('avatar')} src={item.avatar} />
+                                </div>
+
+                                <div className={cx('name_user')}>
+                                    <span className={cx('span_name_user')}>{item.username}</span> <br />
+                                    <span className={cx('span_time_send_mess')}>Đã gửi 6 giờ trước</span>
+                                </div>
+                            </div>
+                        ))}
+                    </>
+                ) : (
+                    <>
+                        {user.map((item) => (
+                            <div className={cx('user_chat')} key={item.id} onClick={() => getUserById(item.id)}>
+                                <div className={cx('div_avatar')}>
+                                    <Avatar sx={{ width: 60, height: 60 }} className={cx('avatar')} src={item.avatar} />
+                                </div>
+
+                                <div className={cx('name_user')}>
+                                    <span className={cx('span_name_user')}>{item.username}</span> <br />
+                                    <span className={cx('span_time_send_mess')}>Đã gửi 6 giờ trước</span>
+                                </div>
+                            </div>
+                        ))}
+                    </>
+                )}
             </div>
-            {room ? 
-            (<div className={cx('chat')} >
-                <div className={cx('header_chat')}>
-                    <div className={cx('div_avatar')}>
-                        <Avatar
-                            sx={{ width: 60, height: 60 }}
-                            className={cx('avatar')}
-                            src={`http://localhost:8080/uploads/${choosenFriend.avatar}`}
-                            alt='Avartar'
-                        />
+            {userChat && userChat.id ? (
+                <div className={cx('chat')}>
+                    <div className={cx('header_chat')}>
+                        <div className={cx('div_avatar')}>
+                            <Avatar sx={{ width: 60, height: 60 }} className={cx('avatar')} src={userChat.avatar} />
+                        </div>
+                        <div className={cx('wr_user_name')}>
+                            <span className={cx('user_name')}>{userChat.name}</span>
+                            <br />
+                            <span className={cx('span_time_onl')}>Hoạt động 6 giờ trước</span>
+                        </div>
                     </div>
-                    <div className={cx('wr_user_name')}>
-                        <span className={cx('user_name')}>{choosenFriend.name}</span>
-                        <br />
-                        <span className={cx('span_time_onl')}>Hoạt động 6 giờ trước</span>
-                    </div>
-                </div>
 
-                <div className={cx('content_mess')}>
-                    
-                    {messages.map((item) => 
-                        item.sender_id === userLogin.id ? (
-                            <div className={cx('my_mess')} key={item.id}>
-                                
-                                <div className={cx('content_my_mess')} >
-                                {isValidUrl(item.message_content) ? 
-                                    (
-                                        <a href={item.message_content} target="_blank" rel="noopener noreferrer">{item.message_content}</a>
-                                    ):(
-                                        item.message_content
-                                    )}
-                                </div>
-                            </div>
-                        ) : (
-                            <div className={cx('user_mess')} key={item.id}>
-                                
-                                <div className={cx('avatar_user_mess')}>
-                                    <Avatar src="https://th.bing.com/th/id/OIP.6nDu0p6RwW2arJTCOU2pCQHaDt?rs=1&pid=ImgDetMain" />
-                                </div>
-                                
-                                <div className={cx('content_user_mess')}>{item.message_content}</div>
-                            </div>
-                        )
-                    )}
-                </div>
-                <div className={cx('wr_send_mess')}>
-                    
-                        <form onSubmit={handleSendMessage}  className={cx('wr_input_mess')} >
+                    <div className={cx('content_mess')}>
+                        {allMess.map((item) =>
+                            item.receiver_id === userChat.id && item.sender_id === userId.id ? (
+                                <>
+                                    <div className={cx('time_send')}>
+                                        <TimeUp time={item.createdAt} />
+                                    </div>
+                                    <div className={cx('my_mess')}>
+                                        <div className={cx('content_my_mess')} id={item.id}>
+                                            {item.message_content}
+                                        </div>
+                                    </div>
+                                </>
+                            ) : (
+                                item.sender_id === userChat.id &&
+                                item.receiver_id === userId.id && (
+                                    <>
+                                        <div className={cx('time_send')}>
+                                            <TimeUp time={item.createdAt} />
+                                        </div>
+                                        <div className={cx('user_mess')}>
+                                            <div className={cx('avatar_user_mess')}>
+                                                <Avatar src={userChat.avatar} />
+                                            </div>
+                                            <div className={cx('content_user_mess')}>{item.message_content}</div>
+                                        </div>
+                                    </>
+                                )
+                            ),
+                        )}
+                    </div>
+                    <div className={cx('wr_send_mess')}>
+                        <div className={cx('wr_input_mess')}>
                             <input
-                                value={inputMess}
-                                onChange={(e) => setInputMess(e.target.value)}
+                                onChange={(e) => setContent(e.target.value)}
+                                value={content}
                                 type="text"
                                 placeholder="Nhập tin nhắn.."
                             />
@@ -221,17 +265,10 @@ function Chat() {
                                     <BiImageAdd className={cx('img_icon')} />
                                 </label>
                             </div>
-                            
-                            <button className={cx('btnSendMess')}  disabled={!inputMess.trim()}>Gửi</button>
-                            
-                        </form>
-                        <button className={cx('iconLocation')} onClick={handleLocation}>
-                                <FaMapMarkerAlt />
-                        </button>
-                        
-                    
+                            <button onClick={sendMessage}>Gửi</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
             ) : (
                 <div className={cx('chat')}>
                     <div className={cx('not_user')}>
@@ -256,7 +293,6 @@ function Chat() {
                     </div>
                 </div>
             )}
-            
         </div>
     );
 }

@@ -26,7 +26,6 @@ module.exports = (sequelize, DataTypes) => {
       userid_1: DataTypes.INTEGER,
       userid_2: DataTypes.INTEGER,
       status: DataTypes.INTEGER,
-      room: DataTypes.STRING,
     },
     {
       sequelize,
