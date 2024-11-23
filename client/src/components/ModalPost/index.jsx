@@ -119,7 +119,7 @@ function ModalPost({ isActiveAdd, isActiveEdit ,nameModal ='Name Modal' ,closeMo
                             <img alt="" src={user.avatar} />
                         </div>
                         <div className={cx('des_startus')}>
-                            <div className={cx('my_user_id')}>{user.username}</div>
+                            <div className={cx('my_user_id')}>{user.username} - {maxCharacter - txtDesPost.length}</div> 
                             <form ref={refForm} onSubmit={handleSubmit} encType="multipart/form-data">
                                 <textarea
                                     className={cx('txt_des')}

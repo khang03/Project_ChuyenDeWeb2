@@ -16,20 +16,24 @@ module.exports = {
         allowNull:false,
         type: Sequelize.INTEGER
       },
-      post_id: {
-        allowNull: false,
-
-        type: Sequelize.INTEGER,
-      },
-      role: {
-        allowNull: false,
-
-        type: Sequelize.INTEGER,
-      },
-      role: {
-        allowNull: false,
-
+      user_id_send: {
+        allowNull:false,
         type: Sequelize.INTEGER
+      },
+      post_id: {
+        allowNull: true,
+
+        type: Sequelize.INTEGER,
+      },
+      role: {
+        allowNull: false,
+
+        type: Sequelize.INTEGER,
+      },
+      is_read: {
+        allowNull: false,
+
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

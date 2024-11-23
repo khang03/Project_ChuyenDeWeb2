@@ -11,7 +11,7 @@ module.exports = {
     const hashedPassword2 = await bcrypt.hash('123', saltRounds);
     const hashedPassword3 = await bcrypt.hash('456', saltRounds);
     const hashedPassword4 = await bcrypt.hash('456', saltRounds);
-
+    const hashedPassword5 = await bcrypt.hash('123', saltRounds);
     await queryInterface.bulkInsert('Users', [
       
       {
@@ -51,6 +51,17 @@ module.exports = {
         password: hashedPassword4,
         avatar: 'sdsas2.png',
         bio: 'đây là tài khoản của Lan',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: 'Admin',
+        username: 'admin',
+        email: 'admin@gmail.com',
+        password: hashedPassword5,
+        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg1MndL-Xp1JcnqaB0YOqTp6zDjrwYyGKsPA&s',
+        bio: 'đây là tài khoản của Admin',
+        role: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
