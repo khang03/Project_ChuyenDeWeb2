@@ -51,7 +51,6 @@ function Register() {
                 bio: bio,
                 name: name,
                 avatar: avatar,
-                
             });
             setMessage(response.data.message); // Lấy thông báo từ server
 
