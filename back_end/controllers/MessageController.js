@@ -21,6 +21,7 @@ class MessageController {
         room: data.room,
         message_content: data.messageContent,
         message_img: 'none.png',
+        retracted: 1
       });
       return dataMessage; // Trả về tin nhắn đã lưu
     } catch (error) {
@@ -31,6 +32,31 @@ class MessageController {
   }
 
   // [DELETE] thu hồi tin nhắn
-  deleteMessage() {}
+  async deleteMessage({messageId}) {
+
+    try {
+      // Tìm tin nhắn trong cơ sở dữ liệu
+      const message = await dbModel.Message.findOne({ where: { id: messageId } });
+      // console.log(message);
+      
+      if (!message) {
+          return { error: true, status: 404, message: "Tin nhắn không tồn tại!" };
+      }
+
+     
+
+      // Cập nhật trạng thái tin nhắn
+      await dbModel.Message.update(
+          { retracted: 0 },
+          { where: { id: messageId } }
+      );
+
+      // // Trả về thông tin cần thiết cho socket.js
+      return { error: false, status: 200, message: "Thu hồi tin nhắn thành công!", data: { messageId } };
+  } catch (error) {
+      console.error(error);
+      return { error: true, status: 500, message: "Có lỗi xảy ra!", errorDetail: error };
+  }
+  }
 }
 module.exports = new MessageController();

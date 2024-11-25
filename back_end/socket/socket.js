@@ -34,6 +34,23 @@ const setupSocket = (server) => {
         }
         
       });
+
+      // Lắng nghe sự kiện 'messageRetracted'
+      socket.on('deleteMessage', async ({messageId}) => {
+        
+        // Xử lý xóa tin nhắn thông qua controller
+        const result = await messageController.deleteMessage({messageId})
+        // console.log(result)
+        if (result.error) {
+          // Phát lỗi về client nếu có vấn đề
+          socket.emit("retractError", { status: result.status, message: result.message });
+        } else {
+            // Phát sự kiện thu hồi tin nhắn thành công
+            io.emit("messageRetracted", { message_id: result.data.messageId });
+            console.log('vàod')
+        }
+
+      })
   
       // Lắng nghe sự kiện 'disconnect'
       socket.on('disconnect', () => {

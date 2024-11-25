@@ -10,6 +10,7 @@ import MessageUser from '~/components/MessagePage/MessageUser';
 
 import io from 'socket.io-client';
 import TimeUp from '~/components/TimeUp';
+import Message from '~/components/MessagePage/Message';
 
 const socket = io('http://localhost:8080');
 
@@ -138,15 +139,7 @@ function Chat() {
 
     };
 
-     // hàm xách nhận link goggle mad 
-     const isValidUrl = (string) => {
-        try {
-          new URL(string); // Sử dụng constructor URL để xác thực
-          return true;
-        } catch (error) {
-          return false;
-        }
-    };
+     
 
     return (
         <div className={cx('wrapper')}>
@@ -182,27 +175,11 @@ function Chat() {
                     
                     {messages.map((item) => 
                         item.sender_id === userLogin.id ? (
-                            <div className={cx('my_mess')} key={item.id}>
-                                
-                                <div className={cx('content_my_mess')} >
-                                {isValidUrl(item.message_content) ? 
-                                    (
-                                        <a href={item.message_content} target="_blank" rel="noopener noreferrer">{item.message_content}</a>
-                                    ):(
-                                        item.message_content
-                                    )}
-                                </div>
-                            </div>
+                            <Message myMess data={item}/>
                         ) : (
-                            <div className={cx('user_mess')} key={item.id}>
-                                
-                                <div className={cx('avatar_user_mess')}>
-                                    <Avatar src="https://th.bing.com/th/id/OIP.6nDu0p6RwW2arJTCOU2pCQHaDt?rs=1&pid=ImgDetMain" />
-                                </div>
-                                
-                                <div className={cx('content_user_mess')}>{item.message_content}</div>
-                            </div>
+                            <Message friendMess data={item}/>
                         )
+                        
                     )}
                 </div>
                 <div className={cx('wr_send_mess')}>

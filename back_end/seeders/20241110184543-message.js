@@ -11,6 +11,7 @@ module.exports = {
         message_content: "hello Khang tớ là Tuấn",  
         message_img: "1.png",// Đảm bảo mã hóa mật khẩu trong thực tế
         room: '1_2',
+        retracted: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -20,6 +21,7 @@ module.exports = {
         message_content: "chào cậu , Tớ là Khang gà đá",  
         message_img: "1.png",// Đảm bảo mã hóa mật khẩu trong thực tế
         room: '1_2',
+        retracted: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },

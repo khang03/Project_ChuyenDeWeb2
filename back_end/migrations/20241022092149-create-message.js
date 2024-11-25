@@ -29,6 +29,10 @@ module.exports = {
         type: Sequelize.STRING(50),
         allowNull: false
       },
+      retracted: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

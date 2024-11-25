@@ -1,0 +1,48 @@
+.my_mess {
+    max-width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: end;
+    margin-top: 10px;
+    .content_my_mess {
+        max-width: 70%;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        background-color: #9c9393;
+        padding: 5px 10px;
+        background-color: #0bb895;
+        color: #fff;
+        border-radius: 25px;
+        border-bottom-right-radius: 0;
+        word-wrap: break-word;
+    }
+}
+
+.user_mess {
+    max-width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: start;
+    margin-top: 10px;
+    .avatar_user_mess{
+
+    }
+    .content_user_mess{
+        max-width: 70%;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: end;
+            background-color: #e4e3e3;
+            padding: 5px 10px;
+            color: #333;
+            border-radius: 25px;
+            word-wrap: break-word;
+            margin-left: 20px;
+    }
+}
+.retracted-message{
+    opacity: 0.4;
+}

@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       message_content: DataTypes.TEXT,
       message_img: DataTypes.STRING,
       room: DataTypes.STRING,
+      retracted: DataTypes.INTEGER
     },
     {
       sequelize,
