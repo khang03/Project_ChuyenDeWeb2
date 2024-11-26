@@ -1,0 +1,13 @@
+.resultSearch {
+    width: 30%;
+    height: 100%;
+    border-left: 1px solid #9c9393;
+    scrollbar-width: none;
+    overflow: auto;
+    .haveResult {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 8px;
+        border-bottom: #9c9393 solid 1px;
+    }
+}

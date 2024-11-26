@@ -38,7 +38,6 @@ function Message({ myMess, friendMess, data }) {
     const handleDeleteMess = () => {
         socket.emit('deleteMessage', { messageId: data.id });
     };
-    console.log(data);
     useEffect(() => {
         socket.on('messageRetracted', (dataRes) => {
             if (dataRes.message_id === data.id) {

@@ -57,6 +57,7 @@
         position: relative;
 
         .header_chat {
+            justify-content: space-between;
             width: 100%;
             height: 15%;
             padding: 20px;
@@ -64,17 +65,22 @@
             align-items: center;
             border-bottom: 1px solid #9c9393;
             top: 0;
-            .div_avatar {
-                width: 10%;
-                height: 100%;
-            }
-            .wr_user_name {
-                margin-left: 20px;
-                .user_name {
-                    font-size: 25px;
+
+            .infoWrap {
+                display: inline-flex;
+
+                .div_avatar {
+                    width: 10%;
+                    height: 100%;
                 }
-                .span_time_onl {
-                    color: #9c9393;
+                .wr_user_name {
+                    margin-left: 50px;
+                    .user_name {
+                        font-size: 25px;
+                    }
+                    .span_time_onl {
+                        color: #9c9393;
+                    }
                 }
             }
         }
@@ -191,5 +197,32 @@
         border: 0;
         color: #046d58;
         font-weight: bold;
+    
+}
+
+.searchWrap {
+
+    flex-grow: 1;
+    
+    .searchIcon {
+        display: inline-block;
+        float: right;
+    }
+    .searchActive {
+        svg {
+            background-color: #ccc;
+            border-radius: 3px;
+        }
+
+    }
+    .inputSearch {
+        padding-left: 6px;
+        width: 90%;
+        outline: none;
+        height: 30px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+    }
+
     
 }

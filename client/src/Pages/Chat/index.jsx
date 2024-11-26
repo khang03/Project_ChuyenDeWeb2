@@ -2,6 +2,7 @@ import classNames from 'classnames/bind';
 import style from './Chat.module.scss';
 import { Avatar } from '@mui/material';
 import { BiImageAdd } from 'react-icons/bi';
+import { IoIosSearch } from "react-icons/io";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -11,6 +12,7 @@ import MessageUser from '~/components/MessagePage/MessageUser';
 import io from 'socket.io-client';
 import TimeUp from '~/components/TimeUp';
 import Message from '~/components/MessagePage/Message';
+import SearchResultMessage from '~/components/SearchResultMessage';
 
 const socket = io('http://localhost:8080');
 
@@ -23,6 +25,9 @@ function Chat() {
     const [choosenFriend, setChoosenFriend] = useState();
     const [messages, setMessages] = useState([]);
     const [inputMess, setInputMess] = useState('');
+    const [inputSearch, setInputSearch] = useState('');
+    const [resultSearch, setResultSearch] = useState([]);
+    const [chooseSearch, setChooseSearch] = useState(false);
     
     
     //Xác thực người dùng để lấy thông tin đăng nhập 
@@ -101,7 +106,7 @@ function Chat() {
     // hàm xử lí gửi vị trí  
     // const [messages, setMessages] = useState([]);
     const [location, setLocation] = useState('')
-    console.log(location);
+    
     
     const handleLocation = async () => {
 
@@ -139,11 +144,30 @@ function Chat() {
 
     };
 
+    // xử lý tìm tin nhắn
+    const handleSearch = (e) => {
+        const searchValue = e.target.value;
+        setInputSearch(searchValue)
+
+        const padload = {
+            q: searchValue,
+            room: room
+        }
+        
+        // gọi API tìm tin nhắn
+        axios.get(`http://localhost:8080/messages/search`,{params: padload})
+            .then(response => setResultSearch(response.data))
+            .catch(error => console.log(error))  
+    }
+    console.log(resultSearch);
      
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('list_chat')}>
+            {/* --- Left --- */}
+            {chooseSearch ? (<SearchResultMessage data={resultSearch} />) :
+            
+            (<div className={cx('list_chat')}>
                 <div className={cx('title_chat')}>Tin nhắn</div>
 
                 {listFriend.map(friend => (
@@ -152,22 +176,45 @@ function Chat() {
                     </div>
                 ))}
                 
-            </div>
+            </div>)
+            }
+            
+            {/* --- Right ---  */}
             {room ? 
             (<div className={cx('chat')} >
                 <div className={cx('header_chat')}>
-                    <div className={cx('div_avatar')}>
-                        <Avatar
-                            sx={{ width: 60, height: 60 }}
-                            className={cx('avatar')}
-                            src={`http://localhost:8080/uploads/${choosenFriend.avatar}`}
-                            alt='Avartar'
-                        />
+                    <div className={cx('infoWrap')}>
+                        <div className={cx('div_avatar')}>
+                            <Avatar
+                                sx={{ width: 60, height: 60 }}
+                                className={cx('avatar')}
+                                src={`http://localhost:8080/uploads/${choosenFriend.avatar}`}
+                                alt='Avartar'
+                            />
+                        </div>
+                        <div className={cx('wr_user_name')}>
+                            <span className={cx('user_name')}>{choosenFriend.name}</span>
+                            <br />
+                            <span className={cx('span_time_onl')}>Hoạt động 6 giờ trước</span>
+                        </div>
                     </div>
-                    <div className={cx('wr_user_name')}>
-                        <span className={cx('user_name')}>{choosenFriend.name}</span>
-                        <br />
-                        <span className={cx('span_time_onl')}>Hoạt động 6 giờ trước</span>
+                    
+                    <div  className={cx('searchWrap')}>
+                        {chooseSearch && (
+                            <input  
+                                type="text" 
+                                className={cx('inputSearch') }
+                                value={inputSearch}
+                                onChange={handleSearch}
+                        />)}
+
+                        <div
+                            className={cx('searchIcon', {'searchActive': chooseSearch})} 
+                            onClick={() => setChooseSearch(!chooseSearch)} 
+                        >
+                            <IoIosSearch size={'30px'}/>
+                        </div>
+
                     </div>
                 </div>
 

@@ -42,6 +42,11 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+
+     // Thêm Full-Text Index
+    await queryInterface.sequelize.query(
+      `ALTER TABLE Messages ADD FULLTEXT(message_content)`
+    );
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Messages');

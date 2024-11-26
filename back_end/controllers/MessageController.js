@@ -1,5 +1,6 @@
 // import Models
 const dbModel = require("../models");
+const { QueryTypes } = require('sequelize');
 
 class MessageController {
   // [GET] lấy tin nhắn của Room (...)
@@ -57,6 +58,28 @@ class MessageController {
       console.error(error);
       return { error: true, status: 500, message: "Có lỗi xảy ra!", errorDetail: error };
   }
+  }
+
+  // [GET] tìm kiếm tin nhắn
+  async searchMessage(req,res) {
+    const {q , room} = req.query; 
+ 
+    // Chuyển đổi từ khóa thành BOOLEAN MODE
+    const booleanKeyword = q
+    .trim() // Loại bỏ khoảng trắng đầu và cuối
+    .split(/\s+/) // Tách chuỗi bằng một hoặc nhiều khoảng trắng
+    .filter(word => word.length > 0) // Loại bỏ chuỗi rỗng
+    .map(word => `+${word}*`) // Thêm tiền tố '+' và '*'
+    .join(" "); // Kết hợp thành chuỗi
+
+    
+    // Thực hiện truy vấn
+    const messages = await dbModel.sequelize.query(
+      `SELECT * FROM messages
+       WHERE room = ? AND MATCH(message_content) AGAINST(? IN BOOLEAN MODE)`,
+      { replacements: [room, booleanKeyword], type: QueryTypes.SELECT }
+    );
+    res.status(200).json(messages);  
   }
 }
 module.exports = new MessageController();

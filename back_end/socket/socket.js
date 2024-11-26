@@ -11,7 +11,8 @@ const setupSocket = (server) => {
   
     // Xử lý kết nối của client
     io.on('connection', (socket) => {
-      
+      // const userId = socket.id
+      // console.log(userId)
   
       // Lắng nghe sự kiện 'join_room' từ client
       socket.on('join_room', ({roomId,userId}) => {
