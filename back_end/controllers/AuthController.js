@@ -1,7 +1,8 @@
-const { where } = require("sequelize");
+const { where, Model } = require("sequelize");
 const dbModel = require("../models");
 const bcrypt = require("bcryptjs"); // Thư viện để mã hóa mật khẩu
 const jwt = require("jsonwebtoken");
+const config = require("../config/email");
 require("dotenv").config(); // Đảm bảo dòng này xuất hiện trước khi sử dụng biến môi trường
 
 class AuthController {
@@ -33,7 +34,56 @@ class AuthController {
       .then((comments) => res.json(comments))
       .catch((err) => res.status(500).json(err));
   }
+  // Annguyen
+  async sendOTP(req, res) {
+    const { email } = req.body;
+    const nodemailer = require('nodemailer');
 
+    
+
+    try {
+      const user = await dbModel.User.findOne({ where: { email } }); // Sử dụng 'where' để lọc email
+
+      // Không tìm thấy user trong db
+      if (!user) {
+        console.error(email + " is not found");
+        
+        return res.status(404).json({ message: "User not found" });
+        
+      }
+
+      // Tạo OTP (ví dụ)
+      const otp = Math.floor(100000 + Math.random() * 900000);
+      console.warn(otp);
+      
+      // // Lưu OTP vào database hoặc session (tùy theo thiết kế của bạn)
+      // user.otp = otp;
+      // await user.save();
+
+      // Gửi email
+      const transporter = nodemailer.createTransport(config);
+
+      
+      const mailOptions = {
+        from: "21211TT3593@mail.tdc.edu.vn",
+        to: email,
+        subject: "Reset password",
+        text: `Your OTP is: ${otp}`,
+      };
+
+      await transporter.sendMail(mailOptions);
+
+      console.warn("Gửi thành công otp");
+      res.json({ message: "OTP sent successfully" });
+
+      // Lưu OTP vào database
+      
+      
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error sending OTP" });
+    }
+  }
   async login(req, res) {
     const { username, password } = req.body;
 
@@ -70,26 +120,28 @@ class AuthController {
     }
   }
   async authenticateToken(req, res) {
-    try{
-      const userId = req.user.userId
+    try {
+      const userId = req.user.userId;
 
       const user = await db.User.findOne({
         where: { id: userId },
-        attributes: ['id', 'username', 'email', 'fullName', 'avatar'], // Chọn các cột bạn cần
+        attributes: ["id", "username", "email", "fullName", "avatar"], // Chọn các cột bạn cần
       });
       if (!user) {
-        return res.status(404).json({ message: 'Người dùng không tồn tại' });
+        return res.status(404).json({ message: "Người dùng không tồn tại" });
       }
-  
+
       // Trả về thông tin người dùng
       res.status(200).json(user);
-    }catch (err) {
+    } catch (err) {
       console.error(err);
-      res.status(500).json({ message: 'Lỗi hệ thống' });
+      res.status(500).json({ message: "Lỗi hệ thống" });
     }
   }
   // [POST] logout
-  
+
   logout() {}
+
+
 }
 module.exports = new AuthController();

@@ -63,6 +63,7 @@ module.exports = {
         password: hashedPassword1,
         avatar: 'sdsas.png',
         bio: 'đây là tk của Tuấn',
+        role: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -73,6 +74,7 @@ module.exports = {
         password: hashedPassword2,
         avatar: 'sdsas2.png',
         bio: 'đây là tài khoản của Khang',
+        role: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -83,6 +85,7 @@ module.exports = {
         password: hashedPassword3,
         avatar: 'sdsas2.png',
         bio: 'đây là tài khoản của Nguyên',
+        role: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -93,6 +96,7 @@ module.exports = {
         password: hashedPassword4,
         avatar: 'sdsas2.png',
         bio: 'đây là tài khoản của Lan',
+        role: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -100,7 +104,19 @@ module.exports = {
         name: 'Admin',
         username: 'admin',
         email: 'admin@gmail.com',
-        password: hashedPassword5,
+        // password: hashedPassword5,
+        password: "admin",
+        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg1MndL-Xp1JcnqaB0YOqTp6zDjrwYyGKsPA&s',
+        bio: 'đây là tài khoản của Admin',
+        role: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: 'An Nguyen',
+        username: 'administrator',
+        email: 'annguyen@gmail.com',
+        password: "annguyen@gmail.com",
         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSg1MndL-Xp1JcnqaB0YOqTp6zDjrwYyGKsPA&s',
         bio: 'đây là tài khoản của Admin',
         role: 1,
