@@ -1,11 +1,10 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-
-const FriendButton = ({id , friendId}) => {
+const FriendButton = ({ id, friendId }) => {
     console.log(id);
     console.log(friendId);
-    
+
     const [status, setStatus] = useState();
     console.log(status);
 
@@ -13,13 +12,13 @@ const FriendButton = ({id , friendId}) => {
     useEffect(() => {
         const fetchInitialStatus = async () => {
             try {
-            const response = await axios.get(`http://localhost:8080/friend/status`, {
-                params: { id, friendId }
-            });
-            setStatus(response.data.status);
+                const response = await axios.get(`http://localhost:8080/friend/status`, {
+                    params: { id, friendId }
+                });
+                setStatus(response.data.status);
             } catch (error) {
-            console.error("Error fetching friend status", error);
-            // setStatus('error');
+                console.error('Error fetching friend status', error);
+                // setStatus('error');
             }
         };
 
@@ -32,25 +31,22 @@ const FriendButton = ({id , friendId}) => {
             const response = await axios.post('http://localhost:8080/friend/add', { id, friendId });
             setStatus(response.data.status);
         } catch (error) {
-            console.error("Error sending friend request", error);
+            console.error('Error sending friend request', error);
         }
-    }
+    };
 
     // Xử lý  bạn bè
-    const handleRemoveFriend = async () => {
-    
-    }
+    const handleRemoveFriend = async () => {};
 
     // Xử lý hủy yêu cầu kết bạn
-    const handleRemoveRequest =  async () => {
-
+    const handleRemoveRequest = async () => {
         try {
             const response = await axios.post('http://localhost:8080/friend/delstatus', { id, friendId });
             setStatus(undefined);
         } catch (error) {
-            console.error("Error sending friend request", error);
+            console.error('Error sending friend request', error);
         }
-    }
+    };
 
     return (
         <>
@@ -61,7 +57,7 @@ const FriendButton = ({id , friendId}) => {
             )}
             {status === 1 && (
                 <div className={'btn_title_edit'} onClick={handleRemoveFriend}>
-                    Bạn Bè 
+                    Bạn Bè
                 </div>
             )}
             {status === undefined && (
@@ -69,7 +65,6 @@ const FriendButton = ({id , friendId}) => {
                     Thêm bạn bè
                 </div>
             )}
-            
         </>
     );
 };

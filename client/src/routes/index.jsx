@@ -12,6 +12,8 @@ import Login from '~/Pages/Login';
 import Changpass from '~/Pages/ChangePass';
 import AdminPage from '~/Pages/Admin';
 import { DefaultLayout } from '~/components/Layout';
+// Annguyen
+import { ResetPassword } from '~/Pages/ResetPassword/ResetPassword';
 
 const publicRoutes = [
     { path: '/', component: Home },
@@ -24,6 +26,8 @@ const publicRoutes = [
     { path: '/ChangPass/:id', component: Changpass },
     { path: '/Register/', component: Register, layout: null },
     { path: '/Login', component: Login, layout: null },
+    // Annguyen: Đường dẫn http://localhost:3000/ResetPassword
+    { path: '/ResetPassword', component: ResetPassword, layout: null },
     { path: '/Admin', component: AdminPage, },
 ];
 

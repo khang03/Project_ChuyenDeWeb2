@@ -14,7 +14,7 @@ function Login() {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
-const navigate = useNavigate()
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault(); // Ngừng reload trang khi submit
 
@@ -39,9 +39,8 @@ const navigate = useNavigate()
             // Reset form sau khi đăng nhập thành công
             setUsername('');
             setPassword('');
-                  // Sau khi đăng nhập thành công, chuyển hướng đến trang chủ hoặc trang cá nhân
-            navigate('/profile')
-
+            // Sau khi đăng nhập thành công, chuyển hướng đến trang chủ hoặc trang cá nhân
+            navigate('/profile');
         } catch (error) {
             console.error('Lỗi khi đăng nhập:', error);
             setMessage(error.response?.data?.message || 'Lỗi hệ thống');
@@ -81,10 +80,16 @@ const navigate = useNavigate()
                         <Button type="submit" fullWidth variant="contained" color="primary">
                             Đăng Nhập
                         </Button>
-
-                        <Link className={cx('register')} to="/Register">
-                            Đăng ký
-                        </Link>
+{/* Annguyen: Thêm link quên mật khẩu */}
+                        <div className="justify-between flex">
+                            <Link className={cx('register') + ' justify-start flex'} to="/Register">
+                                Đăng ký
+                            </Link>
+                            {/* Annguyen: Quên mật khẩu */}
+                            <Link className={cx('register') + ' text-blue-400 justify-end flex'} to="/ResetPassword">
+                                Quên mật khẩu
+                            </Link>
+                        </div>
                     </form>
                     {message}
                 </Paper>
