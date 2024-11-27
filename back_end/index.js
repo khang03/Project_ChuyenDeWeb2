@@ -19,12 +19,12 @@ app.use(bodyParser.json());
 // Static files
 app.use('/uploads', express.static('uploads'));
 
-// Run All Routes
-routes(app);
+
 
 // Thiết lập Socket.IO
 setupSocket(server);
-
+// Run All Routes
+routes(app);
 // Port :3000
 server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

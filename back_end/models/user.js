@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'receiver_id',
         as: 'manyReceiver'
       })
+      User.hasMany(models.Story , {
+        foreignKey: 'user_id',
+        as: 'manyStory'
+      })
       // FriendShip Reference
       User.hasMany(models.Friendship , {
         foreignKey: 'userid_1',

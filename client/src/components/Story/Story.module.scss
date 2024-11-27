@@ -1,0 +1,112 @@
+.wrapper {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    padding: 10px 20px;
+    .story {
+        width: 80px;
+        height: 80px;
+        margin-right: 20px;
+
+        .avatar {
+            width: 100%;
+            height: 100%;
+            // img {
+            //     border-radius: 50%;
+            //     border-image-slice: 1;
+
+            //     border: 5px solid #333; /* Đặt border ban đầu là 'transparent' */
+
+            //     border-image: linear-gradient(45deg, #ff416c, #ff4b2b);
+            //     border-image-slice: 1;
+            // }
+        }
+        p {
+            text-align: center;
+            width: 100%;
+            font-weight: 600;
+        }
+    }
+    .my_story {
+        width: 100px;
+        height: fit-content;
+        position: relative;
+        img {
+            border-radius: 50%;
+        }
+        p {
+            margin: 0;
+        }
+        .add_story {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            font-size: 30px;
+            color: #00abf5;
+            background-color: #fff;
+            border-radius: 50%;
+        }
+    }
+
+    .wr_modal_view {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background-color: #333333;
+        position: absolute;
+
+        .wr_content_story {
+            position: relative;
+            width: 100%;
+            height: 100%;
+
+            .wr_image {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                img {
+                    height: auto;
+                    width: 100%;
+                    border-radius: 15px;
+                }
+            }
+            .header_story {
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                height: 100px;
+                display: flex;
+                padding: 20px 20px;
+                .avatar {
+                }
+                .username {
+                    width: 80%;
+                    height: 100%;
+                    display: flex;
+                    color: #fff;
+
+                    margin-left: 20px;
+                    span {
+                        color: #fff;
+                        font-weight: bold;
+                        margin-right: 20px;
+                    }
+                }
+                .close_modal {
+                    width: 10%;
+                    text-align: right;
+                    button {
+                        background-color: #00000000;
+                        border: none;
+                        color: #fff;
+                        font-size: 30px;
+                    }
+                }
+            }
+        }
+    }
+}

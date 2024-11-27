@@ -10,6 +10,7 @@ import ModalPost from '~/components/ModalPost';
 import { useNavigate } from 'react-router-dom';
 import ImageUser from '~/components/ImageUser';
 import { Avatar } from '@mui/material';
+import Story from '~/components/Story';
 
 const cx = classNames.bind(style);
 
@@ -67,6 +68,7 @@ function Home() {
     return (
         <Fragment>
             <div className={cx('wrapper')}>
+                <Story user={user} />
                 {user && (
                     <div className={cx('wr_startus')} >
                         <div className={cx('img_startus')}>

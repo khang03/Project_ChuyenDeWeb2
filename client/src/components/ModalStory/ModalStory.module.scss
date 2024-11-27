@@ -1,0 +1,203 @@
+.hidden {
+    display: none;
+}
+
+// ----isActive----
+.relative_wr {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.wr_position_up_post {
+    width: 100%;
+    height: calc(100% + 100px);
+    background-color: #00000043;
+    position: absolute;
+    top: -100px;
+    overflow-block: clip;
+    z-index: 10;
+    left: 0;
+}
+
+.position_wr_add_post {
+    width: 580px;
+    background-color: #fff;
+    border-radius: 15px;
+    top: calc(50% - 140px);
+    left: calc(50% - 290px);
+    position: absolute;
+    min-height: 280px;
+    max-height: fit-content;
+
+    .txt_des {
+        border: none;
+        outline: none;
+    }
+    .wr_btn_upl_stt {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        align-content: center;
+        text-align: right;
+        padding-right: 15px;
+        margin-top: 20px;
+        top: 66px;
+        left: 116px;
+
+        .btn_upload {
+            height: 40px;
+            width: 15%;
+            border-radius: 10px;
+            background-color: #fff;
+            border-color: #9c9393;
+            box-shadow: 0 0 2px;
+        }
+
+        .btn_upload:hover {
+            background-color: #333;
+            color: #fff;
+        }
+    }
+}
+
+.wr_startus {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    margin-top: 10px;
+    .img_startus {
+        height: 100%;
+        width: 20%;
+        display: flex;
+        justify-content: center;
+        .avatar {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            border: 2px solid #9c9393;
+        }
+    }
+
+    .des_startus {
+        height: 100%;
+        width: 60%;
+        align-content: center;
+        form{
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            height: 30px;
+            border: 0;
+        }
+        input:focus {
+            outline: none;
+        }
+        .wr_inp_img {
+            width: 100%;
+            display: flex;
+            label {
+                color: #9c9393;
+                font-size: 20px;
+                display: inline-block;
+                cursor: pointer;
+
+                .img_icon {
+                    margin-left: -20px;
+                    cursor: pointer;
+                }
+            }
+
+            .inp_img {
+                opacity: 0;
+                width: 20px;
+                cursor: pointer;
+                height: 20px;
+            }
+        }
+    }
+}
+.wr_position_up_post {
+    width: 100%;
+    height: calc(100% + 100px);
+    background-color: #00000043;
+    position: absolute;
+    top: -100px;
+    overflow-block: clip;
+    z-index: 10;
+    left: 0;
+}
+
+.relative_wr {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.position_wr_add_post {
+    width: 580px;
+    background-color: #fff;
+    border-radius: 15px;
+    top: calc(50% - 140px);
+    left: calc(50% - 290px);
+    position: absolute;
+    min-height: 280px;
+    max-height: fit-content;
+}
+.box_error {
+    padding: 0 20px;
+    margin-top: 40px;
+    color: rgb(255, 80, 80);
+}
+
+.info_render {
+    width: 100%;
+    height: 100px;
+    padding: 0 20px;
+    margin-top: 50px;
+
+    .img_render{
+        display: flex;
+        .wr_img{
+            position: relative;
+            width: fit-content;
+            height: 100px;
+            img{
+                margin-right: 10px;
+            }
+    
+            button{
+                display: inline-block;
+                position: absolute;
+                right: 0;
+                width: 20px;
+                height: 20px;
+                color: #fff;
+                background-color: #535353;
+                border: 0;
+                border-radius: 50%;
+            }
+        }
+    }
+}
+
+.btn_upl_stt {
+    // margin-top: 10px;
+    margin-right: 10px;
+    .btn_turn_off_post {
+        font-size: 30px;
+        border-radius: 50%;
+        background-color: #ffffff00;
+        border: #9c939300;
+        color: #a1a1a2;
+    }
+}
+.wr_title{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    .title {
+        margin-left: 30px;
+    }
+}
