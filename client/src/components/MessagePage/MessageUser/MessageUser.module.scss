@@ -6,6 +6,12 @@
         cursor: pointer;
     }
     .div_avatar {
+        width: 60px;
+        height: 60px;
+        .avatar{
+            height: 100%;
+            width: 100%;
+        }
     }
 
     .name_user {

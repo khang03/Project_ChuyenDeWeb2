@@ -3,11 +3,13 @@ import * as React from 'react';
 
 import style from './Profile.module.scss';
 import classNames from 'classnames/bind';
-import { Switch, FormControlLabel } from '@mui/material';
+import { Switch, FormControlLabel, Avatar } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PostUser from '~/components/PostUser';
 import ModalPost from '~/components/ModalPost';
+import ImageUser from '~/components/ImageUser';
+import Authentication from '~/functions/Authentication';
 
 const cx = classNames.bind(style);
 
@@ -167,7 +169,7 @@ function Profile() {
                 name: name,
                 bio: bio,
             });
-            
+
             // setUser((prevUser) =>
             //     prevUser.map((userId) =>
             //         userId.id === user.id ? { ...userId, username: username, name: name, bio: bio, avatar: avatar } : userId,
@@ -176,6 +178,27 @@ function Profile() {
             console.log('lỗi sửa user');
         }
     };
+
+    // Khai báo state
+    const [userLogin, setUserLogin] = useState();
+    const [listFriend, setlistFriend] = useState([]);
+    //Lấy danh sách bạn bè
+    useEffect(() => {
+        async function getUserLogin() {
+            const dataUserLogin = await Authentication();
+            if (dataUserLogin === 0) {
+                console.log('Cần login lại');
+            } else {
+                const dataListFriend = await axios.get(
+                    `http://localhost:8080/friend/getListFriend/${dataUserLogin.id}`,
+                );
+                setUserLogin(dataUserLogin);
+                setlistFriend(dataListFriend.data);
+            }
+        }
+
+        getUserLogin();
+    }, []);
 
     return (
         <Fragment>
@@ -187,10 +210,10 @@ function Profile() {
                                 <h2>{user.name}</h2>
                                 <p className={cx('user_id')}>{user.username}</p>
                                 <p className={cx('bio')}>{user.bio}</p>
-                                <p className={cx('sum_fr')}>Có 10 bạn bè</p>
+                                <p className={cx('sum_fr')}>Có {listFriend.length} bạn bè</p>
                             </div>
                             <div className={cx('wr_img_info')}>
-                                <img src={user.avatar} alt="avata user" />
+                                <Avatar sx={{ width: 100, height: 100 }} className={cx('avatar')} src={user.avatar} />
                             </div>
                         </div>
                         <div className={cx('wr_btn_edit_profile')} onClick={handleEdit}>
@@ -200,7 +223,7 @@ function Profile() {
 
                     <div className={cx('wr_upl')}>
                         <div className={cx('img_startus')}>
-                            <img src={user.avatar} />
+                            <Avatar sx={{ width: 60, height: 60 }} className={cx('avatar')} src={user.avatar} />
                         </div>
                         <div onClick={handleUpLoad} className={cx('des_startus')}>
                             <div className={cx('des')}>Có gì hot?</div>

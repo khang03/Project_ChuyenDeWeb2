@@ -69,8 +69,9 @@
     .img_startus {
         height: 100%;
         width: 20%;
-        text-align: center;
-        img {
+        display: flex;
+        justify-content: center;
+        .avatar {
             height: 60px;
             width: 60px;
             border-radius: 50%;
@@ -154,7 +155,31 @@
     width: 100%;
     height: 100px;
     padding: 0 20px;
-    margin-top: 20px;
+    margin-top: 50px;
+
+    .img_render{
+        display: flex;
+        .wr_img{
+            position: relative;
+            width: fit-content;
+            height: 100px;
+            img{
+                margin-right: 10px;
+            }
+    
+            button{
+                display: inline-block;
+                position: absolute;
+                right: 0;
+                width: 20px;
+                height: 20px;
+                color: #fff;
+                background-color: #535353;
+                border: 0;
+                border-radius: 50%;
+            }
+        }
+    }
 }
 
 .btn_upl_stt {

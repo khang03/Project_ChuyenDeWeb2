@@ -5,10 +5,21 @@ import classNames from 'classnames/bind';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { Avatar } from '@mui/material';
 
 const cx = classNames.bind(style);
 
-function ModalPost({ isActiveAdd, isActiveEdit ,nameModal ='Name Modal' ,closeModal, imgs , txt, idPost, idUser,user }) {
+function ModalPost({
+    isActiveAdd,
+    isActiveEdit,
+    nameModal = 'Name Modal',
+    closeModal,
+    imgs,
+    txt,
+    idPost,
+    idUser,
+    user,
+}) {
     // Khai báo State và Ref (khai báo biến ở đây)
     const refForm = useRef();
     const [txtDesPost, setTxtDesPost] = useState('');
@@ -16,17 +27,17 @@ function ModalPost({ isActiveAdd, isActiveEdit ,nameModal ='Name Modal' ,closeMo
     const [messageErr, setMessageErr] = useState('');
     const [posts, setPosts] = useState([]);
     let maxCharacter = 500;
-    
+
     useEffect(() => {
         if (imgs && imgs.length > 0) {
-            setImage({imgPreview: imgs,imgData: []})
+            setImage({ imgPreview: imgs, imgData: [] });
         }
-        if (txt) {       
+        if (txt) {
             setTxtDesPost(txt);
         }
-    },[])
+    }, []);
 
-    // Xóa ảnh 
+    // Xóa ảnh
     useEffect(() => {
         // cleanup function
         return () => {
@@ -34,12 +45,26 @@ function ModalPost({ isActiveAdd, isActiveEdit ,nameModal ='Name Modal' ,closeMo
         };
     }, [image]);
 
+    // Xóa ảnh không muốn chọn
+    const handleDeleteImage = (index) => {
+        // Tạo một bản sao của imgPreview và imgData để tránh thay đổi trực tiếp vào state
+        const newImgPreview = [...image.imgPreview];
+        const newImgData = [...image.imgData];
+
+        // Xóa ảnh theo index
+        newImgPreview.splice(index, 1);
+        newImgData.splice(index, 1);
+
+        // Cập nhật lại state
+        setImage({ imgPreview: newImgPreview, imgData: newImgData });
+    };
+
     // Xử lý ảnh xem trước
     const handlePreviewImage = (e) => {
         const maxFile = 4;
         const files = Array.from(e.target.files);
         console.log(files);
-        
+
         if (files.length > maxFile) {
             setMessageErr('Chỉ up được 4 file thôi nhé các anh hacker!');
             return;
@@ -53,7 +78,7 @@ function ModalPost({ isActiveAdd, isActiveEdit ,nameModal ='Name Modal' ,closeMo
         e.preventDefault();
         let action = e.target.elements.action.value;
         console.log(action);
-        
+
         const formData = new FormData();
         image.imgData.forEach((image) => {
             formData.append('images', image);
@@ -62,43 +87,41 @@ function ModalPost({ isActiveAdd, isActiveEdit ,nameModal ='Name Modal' ,closeMo
         formData.append('idUser', idUser);
         // formData.append('idPost', idPost);
 
-        
         if (action === 'update') {
-            axios.put(`http://localhost:8080/posts/update/${idPost}`, formData)
-                .then(response => {
+            axios
+                .put(`http://localhost:8080/posts/update/${idPost}`, formData)
+                .then((response) => {
                     if (response.status === 201) {
                         closeModal();
                         toast(response.data.message, { position: 'bottom-center' });
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     if (error.response) {
                         toast.error(error.response.data.message, { position: 'bottom-center' });
                     }
-                })
-        }else if (action === 'add') {
-            
-            
+                });
+        } else if (action === 'add') {
             // Gửi dữ liệu và nhận phản hồi
             axios
-            .post(`http://localhost:8080/posts/store`, formData)
-            .then((response) => {
-                if (response.status === 201) {
-                    console.log(response.data);
-                    closeModal();
-                    toast(response.data.message, { position: 'bottom-center' });    
-                }
-                setPosts((prevPost) => [
-                    {id: response.data.id, content: response.data.content, user_id: idUser},
-                    ...prevPost,
-                ])
-            })
-            .catch((error) => {
-                if (error.response) {
-                    toast.error(error.response.data.message, { position: 'bottom-center' });
-                }
-            });
-        }    
+                .post(`http://localhost:8080/posts/store`, formData)
+                .then((response) => {
+                    if (response.status === 201) {
+                        console.log(response.data);
+                        closeModal();
+                        toast(response.data.message, { position: 'bottom-center' });
+                    }
+                    setPosts((prevPost) => [
+                        { id: response.data.id, content: response.data.content, user_id: idUser },
+                        ...prevPost,
+                    ]);
+                })
+                .catch((error) => {
+                    if (error.response) {
+                        toast.error(error.response.data.message, { position: 'bottom-center' });
+                    }
+                });
+        }
     };
 
     return (
@@ -116,10 +139,12 @@ function ModalPost({ isActiveAdd, isActiveEdit ,nameModal ='Name Modal' ,closeMo
                     </div>
                     <div className={cx('wr_startus')}>
                         <div className={cx('img_startus')}>
-                            <img alt="" src={user.avatar} />
+                            <Avatar sx={{ width: 60, height: 60 }} className={cx('avatar')} src={user.avatar} />
                         </div>
                         <div className={cx('des_startus')}>
-                            <div className={cx('my_user_id')}>{user.username} - {maxCharacter - txtDesPost.length}</div> 
+                            <div className={cx('my_user_id')}>
+                                {user.username} - {maxCharacter - txtDesPost.length}
+                            </div>
                             <form ref={refForm} onSubmit={handleSubmit} encType="multipart/form-data">
                                 <textarea
                                     className={cx('txt_des')}
@@ -147,17 +172,16 @@ function ModalPost({ isActiveAdd, isActiveEdit ,nameModal ='Name Modal' ,closeMo
 
                                 <div className={cx('wr_btn_upl_stt')}>
                                     {isActiveAdd && (
-                                        <button name='action' value='add' type="submit" className={cx('btn_upload')}>
+                                        <button name="action" value="add" type="submit" className={cx('btn_upload')}>
                                             Đăng
                                         </button>
                                     )}
                                     {isActiveEdit && (
-                                        <button name='action' value='update' type="submit" className={cx('btn_upload')}>
+                                        <button name="action" value="update" type="submit" className={cx('btn_upload')}>
                                             Sửa
                                         </button>
                                     )}
                                     {/* Hôm qua làm tới đây để biết modal sửa hay đăng , làm tiếp value = add ,edit thì xử lý API (nhớ xóa) */}
-                                    
                                 </div>
                             </form>
                         </div>
@@ -166,14 +190,19 @@ function ModalPost({ isActiveAdd, isActiveEdit ,nameModal ='Name Modal' ,closeMo
                     <div className={cx('info_render')}>
                         <div className={cx('img_render')}>
                             {image.imgPreview.map((img, index) => (
-                                
-                                
-                                <img
-                                    key={index}
-                                    src={typeof img === 'string' ? img : `http://localhost:8080/uploads/${img.img_url}`}
-                                    alt=""
-                                    style={{ width: 'auto', height: 100, borderRadius: '15px' }}
-                                />
+                                <div className={cx('wr_img')} key={index}>
+                                    <img
+                                        key={index}
+                                        src={
+                                            typeof img === 'string'
+                                                ? img
+                                                : `http://localhost:8080/uploads/${img.img_url}`
+                                        }
+                                        alt=""
+                                        style={{ width: 'auto', height: 100, borderRadius: '15px' }}
+                                    />
+                                    <button onClick={() => handleDeleteImage(index)}>X</button>
+                                </div>
                             ))}
                         </div>
                     </div>

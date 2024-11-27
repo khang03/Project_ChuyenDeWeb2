@@ -4,7 +4,7 @@ import style from './PostUser.module.scss';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Menu, MenuItem, Fade } from '@mui/material';
+import { Button, Menu, MenuItem, Fade, Avatar } from '@mui/material';
 import ModalPost from '../ModalPost';
 import { toast } from 'react-toastify';
 import TimeUp from '../TimeUp';
@@ -180,7 +180,7 @@ const PostUser = ({ isActiveEdit, setPosts, user, item, index }) => {
                 <>
                     <div className={cx('wr_startus_post')}>
                         <div className={cx('img_startus')} id={item.oneUser.id}>
-                            <img alt="" src={item.oneUser.avatar} />
+                            <Avatar sx={{ width: 60, height: 60 }} className={cx('avatar')} src={item.oneUser.avatar} />
                         </div>
                         <div className={cx('wr_des_post')}>
                             <div className={cx('user_id')}>
@@ -218,7 +218,9 @@ const PostUser = ({ isActiveEdit, setPosts, user, item, index }) => {
                                 >
                                     <MenuItem onClick={handleCloseReport}>Báo cáo bài viết ! </MenuItem>
                                 </Menu>
-                                {modalReport && <ModalReportPost setModalreport={setModalReport} user={user} item={item} />}
+                                {modalReport && (
+                                    <ModalReportPost setModalreport={setModalReport} user={user} item={item} />
+                                )}
                             </div>
                         )}
 
@@ -275,9 +277,15 @@ const PostUser = ({ isActiveEdit, setPosts, user, item, index }) => {
                                     alt=""
                                     className={cx('image_post')}
                                     src={`http://localhost:8080/uploads/${image.img_url}`}
+                                    onDoubleClick={() => toggleLike(item.id)}
                                 />
                             ))}
                         </div>
+                        {showHeart && (
+                            <div className={cx('show_heart')} style={liked ? { color: '#d63232' } : { color: '#fff' }}>
+                                <BiSolidHeart />
+                            </div>
+                        )}
                     </div>
 
                     <div className={cx('interact')}>

@@ -354,7 +354,7 @@ function DetailPost() {
                                                 key={image.id}
                                                 src={`http://localhost:8080/uploads/${image.img_url}`}
                                                 alt=""
-                                                onDoubleClick={handleLike}
+                                                onDoubleClick={toggleLike}
                                             />
                                         ))}
                                     </div>

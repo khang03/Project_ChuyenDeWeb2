@@ -58,6 +58,8 @@ $colorblur: #c2c2c5;
         }
         .wr_btn_edit_profile:hover {
             cursor: pointer;
+            background-color: #000;
+            color: #fff;
         }
     }
 
@@ -69,8 +71,9 @@ $colorblur: #c2c2c5;
         .img_startus {
             height: 100%;
             width: 20%;
-            align-content: center;
-            text-align: center;
+            align-items: center;
+            justify-content: center;
+            display: flex;
 
             img {
                 width: 50px;

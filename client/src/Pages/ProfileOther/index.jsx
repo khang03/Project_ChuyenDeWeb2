@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import FriendButton from '~/components/FriendButton';
+import ImageUser from '~/components/ImageUser';
 const cx = classNames.bind(style);
 
 function ProfileOther() {
@@ -92,7 +93,6 @@ function ProfileOther() {
         };
     });
 
-    
 
     
 
@@ -109,7 +109,7 @@ function ProfileOther() {
                                 <p className={cx('sum_fr')}>Có 10 bạn bè</p>
                             </div>
                             <div className={cx('wr_img_info')}>
-                                <img src={item.avatar} alt="avata user" />
+                            <Avatar sx={{ width: 100, height: 100 }} className={cx('avatar')} src={user.avatar} />
                             </div>
                         </div>
                         <div className={cx('wr_add_chat')}>

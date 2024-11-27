@@ -13,11 +13,11 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       user_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       user_id_send: {
-        allowNull:false,
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       post_id: {
         allowNull: true,
@@ -29,11 +29,7 @@ module.exports = {
 
         type: Sequelize.INTEGER,
       },
-      is_read: {
-        allowNull: false,
 
-        type: Sequelize.INTEGER,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

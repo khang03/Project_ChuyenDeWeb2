@@ -8,6 +8,8 @@ import style from './Home.module.scss';
 import PostUser from '~/components/PostUser';
 import ModalPost from '~/components/ModalPost';
 import { useNavigate } from 'react-router-dom';
+import ImageUser from '~/components/ImageUser';
+import { Avatar } from '@mui/material';
 
 const cx = classNames.bind(style);
 
@@ -68,7 +70,7 @@ function Home() {
                 {user && (
                     <div className={cx('wr_startus')} >
                         <div className={cx('img_startus')}>
-                            <img alt="" src={user.avatar} />
+                    <Avatar sx={{ width: 60, height: 60 }} className={cx('avatar')} src={user.avatar} />
                         </div>
                         <div className={cx('des_startus')}>
                             <input placeholder="Có gì hot?" />
