@@ -5,6 +5,7 @@ const postRouter = express.Router();
 
 postRouter.get("/", postController.index);
 postRouter.get("/user/:id", postController.getAllPostByIdUser);
+postRouter.get("/search/:keyword", postController.search);
 postRouter.get("/:id", postController.show);
 // postRouter.get("/like", likeController.like);
 

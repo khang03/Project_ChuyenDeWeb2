@@ -1,4 +1,4 @@
-const { Sequelize, where } = require("sequelize");
+const { Sequelize, where, Op } = require("sequelize");
 const dbModel = require("../models");
 const fs = require("fs");
 const path = require("path");
@@ -47,7 +47,7 @@ class PostController {
 
   show(req, res) {
     const { id } = req.params;
-
+    // console.log(id);
     dbModel.Post.findByPk(id, {
       include: [
         {
@@ -90,6 +90,58 @@ class PostController {
       })
       .catch((error) => {
         res.status(500).json(error);
+      });
+  }
+
+  search(req, res) {
+    const { keyword } = req.params; // Extract the search keyword from the query params
+    console.log('saerch',keyword)
+    dbModel.Post.findAll({
+      where: {
+        // Match title or content with the keyword using a case-insensitive LIKE
+        content: { [Op.like]: `%${keyword}%` }
+      },
+      include: [
+        {
+          model: dbModel.Image,
+          attributes: ["img_url", "post_id"],
+          as: "manyImage",
+        },
+        {
+          model: dbModel.User,
+          attributes: ["id", "username", "avatar"],
+          as: "oneUser",
+        },
+        {
+          model: dbModel.Comment,
+          attributes: [
+            "id",
+            "post_id",
+            "comment_content",
+            "user_id",
+            "createdAt",
+          ],
+          as: "manyComment",
+        },
+        {
+          model: dbModel.Like,
+          attributes: ["id", "user_id"],
+          as: "manyLike",
+        },
+      ],
+    })
+      .then((posts) => {
+        // Sort comments of each post if needed
+        posts.forEach((post) => {
+          if (post.manyComment) {
+            post.manyComment.sort((a, b) => b.id - a.id);
+          }
+        });
+  
+        res.json(posts);
+      })
+      .catch((error) => {
+        res.status(500).json({ error: error.message });
       });
   }
 

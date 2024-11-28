@@ -12,6 +12,7 @@ module.exports = {
         password: '123456',
         avatar: 'sdsas.png',
         bio: 'đây là tài khoản của tôi',
+        role: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -22,6 +23,7 @@ module.exports = {
         password: '123456',
         avatar: 'sdsas2.png',
         bio: 'đây là tài khoản của tôi2',
+        role: 2, 
         createdAt: new Date(),
         updatedAt: new Date()
       }
@@ -76,6 +78,7 @@ module.exports = {
         bio: 'boygameso1lt@gmail.com',
         role: 1,
         createdAt: new Date(),
+        role: 2,
         updatedAt: new Date()
       },
       {
@@ -87,6 +90,7 @@ module.exports = {
         bio: 'đây là tài khoản của Khang',
         role: 1,
         createdAt: new Date(),
+        role: 2,
         updatedAt: new Date()
       },
       {
@@ -98,6 +102,7 @@ module.exports = {
         bio: 'đây là tài khoản của Nguyên',
         role: 1,
         createdAt: new Date(),
+        role: 2,
         updatedAt: new Date()
       },
       {
@@ -109,6 +114,7 @@ module.exports = {
         bio: 'đây là tài khoản của Lan',
         role: 1,
         createdAt: new Date(),
+        role: 2,
         updatedAt: new Date()
       },
       {

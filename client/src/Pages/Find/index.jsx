@@ -6,6 +6,7 @@ import { Box, Card, Typography } from '@mui/material';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import PostUser from '~/components/PostUser';
 
 const cx = classNames.bind(style);
 // const arr_user = [
@@ -21,33 +22,61 @@ const cx = classNames.bind(style);
 //     { user_id: 10, user_name: 'Lý Nam', content: 'Đã thích bài viết của bạn' },
 // ];
 
+function useDebounce(cb, delay) {
+    const [debounceValue, setDebounceValue] = useState(cb);
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebounceValue(cb);
+        }, delay);
 
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [cb, delay]);
+    return debounceValue;
+}
 
 function Find() {
-    const [data, setData] = useState([]);
 
     // useEffect(() => {
     //     setData([...arr_user]);
     // }, []);
 
-    const [username , setUsername] = useState(''); //lưu giá trị nhập vào mảng 
-    const [users , setUsers] = useState([]);  // lưu keeeesrt quả tiềm kiếm 
-  
-        // useEffect(() => {
-        //     if(username.length === 0){
-        //         setUsers([]);
-        //         return;
-        //     }
-        // })
-        
-        const fetchUsers = async () => {
-            const response = await axios.get(`http://localhost:8080/users/search/${username}`);
-            setUsers(response.data);
+    const [username, setUsername] = useState(''); //lưu giá trị nhập vào mảng 
+    const [users, setUsers] = useState([]);  // lưu keeeesrt quả tiềm kiếm 
+    const [posts, setPosts] = useState([]); //
+    const debouncedUsername = useDebounce(username, 500); // 500ms debounce delay
 
-        };
+    // useEffect(() => {
+    //     if(username.length === 0){
+    //         setUsers([]);
+    //         return;
+    //     }
+    // }) 
 
+    useEffect(() => {
+        if (debouncedUsername) {
+            const fetchUsers = async () => {
+                try {
+                    const userResponse = await axios.get(`http://localhost:8080/users/search/${debouncedUsername}`);
+                    const postResponse = await axios.get(`http://localhost:8080/posts/search/${debouncedUsername}`)
+                    setUsers(userResponse.data);
+                    setPosts(postResponse.data);
+                    console.log(postResponse.data);
+                } catch (error) {
+                    console.error("Error fetching users:", error);
+                }
+            };
 
-    
+            fetchUsers();
+        } else {
+            setUsers([]); // Clear the user list if the input is empty
+        }
+    }, [debouncedUsername]); // Only run when debounced value changes
+
+    const handleSearch = (e) => {
+        setUsername(e.target.value); // Update the username state
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -57,19 +86,19 @@ function Find() {
                         <BiSearch />
                     </div>
                     <div className={cx('wr_search')}>
-                        <input 
-                          type="text"
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}
-                          placeholder="Nhập user name" />
-                    <button onClick={fetchUsers}>Tìm Kiếm </button>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={handleSearch}
+                            placeholder="Nhập user name" />
+                        {/* <button onClick={fetchUsers}>Tìm Kiếm </button> */}
                     </div>
                 </div>
             </div>
             <div className={cx('tittle_result')}>
                 <span>Kết quả</span>
             </div>
-            
+
 
             <div className={cx('wr_result')}>
                 {users.map((user) => (
@@ -82,16 +111,22 @@ function Find() {
                                 />
                             </div>
                             <div className={cx('wr_info_user_find')}>
-                            
+
                                 <Link to={`/ProfileOther/${user.id}`}>
-                                <p className={cx('user_id')}>{user.username}</p>
-                                <p className={cx('user_name')}>{user.name}</p>
-                                <p>{user.content}.</p>
+                                    <p className={cx('user_id')}>{user.username}</p>
+                                    <p className={cx('user_name')}>{user.name}</p>
+                                    <p>{user.content}.</p>
                                 </Link>
-            
+
                             </div>
                         </div>
                     </Card>
+                ))}
+
+                {posts.map((item, index) => (
+                    // console.log(item)
+                    <PostUser setPosts={setPosts} user={item.oneUser} key={item.id} item={item} index={index} />
+
                 ))}
                 {/* 
                 <div className={cx('result')}>
