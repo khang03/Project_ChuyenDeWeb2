@@ -25,7 +25,6 @@ export function ResetPassword() {
             const response = await axios.post('http://localhost:8080/login/forgot-password', { email });
 
             console.log(response);
-            
         } catch (error) {
             console.error(error);
             setErrorMessage('An error occurred. Please check your network connection or try again later.');

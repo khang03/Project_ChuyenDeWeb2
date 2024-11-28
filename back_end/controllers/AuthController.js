@@ -37,9 +37,7 @@ class AuthController {
   // Annguyen
   async sendOTP(req, res) {
     const { email } = req.body;
-    const nodemailer = require('nodemailer');
-
-    
+    const nodemailer = require("nodemailer");
 
     try {
       const user = await dbModel.User.findOne({ where: { email } }); // Sử dụng 'where' để lọc email
@@ -47,15 +45,14 @@ class AuthController {
       // Không tìm thấy user trong db
       if (!user) {
         console.error(email + " is not found");
-        
+
         return res.status(404).json({ message: "User not found" });
-        
       }
 
       // Tạo OTP (ví dụ)
       const otp = Math.floor(100000 + Math.random() * 900000);
       console.warn(otp);
-      
+
       // // Lưu OTP vào database hoặc session (tùy theo thiết kế của bạn)
       // user.otp = otp;
       // await user.save();
@@ -63,7 +60,6 @@ class AuthController {
       // Gửi email
       const transporter = nodemailer.createTransport(config);
 
-      
       const mailOptions = {
         from: "21211TT3593@mail.tdc.edu.vn",
         to: email,
@@ -76,9 +72,7 @@ class AuthController {
       console.warn("Gửi thành công otp");
       res.json({ message: "OTP sent successfully" });
 
-      // Lưu OTP vào database
-      
-      
+
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error sending OTP" });
@@ -141,7 +135,5 @@ class AuthController {
   // [POST] logout
 
   logout() {}
-
-
 }
 module.exports = new AuthController();

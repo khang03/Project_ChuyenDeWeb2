@@ -68,6 +68,17 @@ module.exports = {
         updatedAt: new Date()
       },
       {
+        name: 'boygameso1lt@gmail.com',
+        username: 'boygameso1lt@gmail.com',
+        email: 'boygameso1lt@gmail.com',
+        password: "boygameso1lt@gmail.com",
+        avatar: 'boygameso1lt@gmail.com',
+        bio: 'boygameso1lt@gmail.com',
+        role: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
         name: 'Khang',
         username: 'khang02',
         email: 'khang@gmail.com',
