@@ -60,6 +60,8 @@ module.exports = (sequelize, DataTypes) => {
       avatar: DataTypes.STRING,
       bio: DataTypes.TEXT,
       role: DataTypes.INTEGER,
+      status: DataTypes.INTEGER,
+
     },
     {
       sequelize,

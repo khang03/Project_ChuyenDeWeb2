@@ -27,13 +27,12 @@ function ProfileOther() {
     const [error, setError] = useState('');
     const { username } = useParams();
 
-    console.log(userLogin);
     console.log(user);
-    
+
     useEffect(() => {
         const fetchPosts = async () => {
             const response = await axios.get(`http://localhost:8080/users/${username}`);
-            setUser(response.data);
+            setUser(response.data[0]);
         };
         fetchPosts();
     }, []);
@@ -67,7 +66,8 @@ function ProfileOther() {
         };
         fetchUserData();
     }, []);
-    
+
+    console.log(user);
 
     //----------------------------------------------Phan xu li render up post---------------------------------------
     const [btnUpLoad, setBtnUpLoad] = useState(false);
@@ -92,44 +92,81 @@ function ProfileOther() {
         };
     });
 
-    
-
-    
-
     return (
         <Fragment>
-            {user.map((item) => (
+            {user && (
                 <div className={cx('wrapper')}>
                     <div className={cx('profile')}>
                         <div className={cx('wr_info')}>
                             <div className={cx('info')}>
-                                <h2>{item.name}</h2>
-                                <p className={cx('user_id')}>{item.username}</p>
-                                <p className={cx('bio')}>{item.bio}</p>
+                                <h2>{user.name}</h2>
+                                <p className={cx('user_id')}>{user.username}</p>
+                                <p className={cx('bio')}>{user.bio}</p>
                                 <p className={cx('sum_fr')}>Có 10 bạn bè</p>
                             </div>
                             <div className={cx('wr_img_info')}>
-                                <img src={item.avatar} alt="avata user" />
+                                <img src={user.avatar} alt="avata user" />
                             </div>
                         </div>
                         <div className={cx('wr_add_chat')}>
-                            <div className={cx('wr_btn_edit_profile')}>
-                                
-                                <FriendButton id={userLogin.id} friendId={item.id}/>
-                                
-                            </div>
-                            <div className={cx('wr_btn_chat')}>
-                                <div className={cx('btn_title_edit')}> Nhắn tin</div>
-                            </div>
+                            {user.status === 0 ? (
+                                <>
+                                    <div className={cx('wr_btn_edit_profile')}>
+                                        <FriendButton status={user.status} id={userLogin.id} friendId={user.id} />
+                                    </div>
+                                    <div className={cx('wr_btn_chat')}>
+                                        <div className={cx('btn_title_edit')}> Nhắn tin</div>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className={cx('wr_btn_private')}>
+                                    <FriendButton status={user.status} id={userLogin.id} friendId={user.id} />
+                                </div>
+                            )}
                         </div>
                     </div>
-
-                    
-
-                   
-                    
+                    {user.status === 0 ? (
+                        <></>
+                    ) : (
+                        <div className={cx('status')}>
+                            <div className={cx('logo_private')}>
+                                <svg
+                                    aria-label=""
+                                    class="x1lliihq x1n2onr6 x5n08af"
+                                    fill="currentColor"
+                                    height="48"
+                                    role="img"
+                                    viewBox="0 0 96 96"
+                                    width="48"
+                                >
+                                    <title></title>
+                                    <circle
+                                        cx="48"
+                                        cy="48"
+                                        fill="none"
+                                        r="47"
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                    ></circle>
+                                    <path
+                                        d="M60.931 70.001H35.065a5.036 5.036 0 0 1-5.068-5.004V46.005A5.036 5.036 0 0 1 35.065 41H60.93a5.035 5.035 0 0 1 5.066 5.004v18.992A5.035 5.035 0 0 1 60.93 70ZM37.999 39.996v-6.998a10 10 0 0 1 20 0v6.998"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                    ></path>
+                                </svg>
+                            </div>
+                            <div className={cx('text_private')}>
+                                Đây là tài khoản riêng tư bạn không thể xem các bài viết từ họ.
+                            </div>
+                        </div>
+                    )}
                 </div>
-            ))}
+            )}
         </Fragment>
     );
 }

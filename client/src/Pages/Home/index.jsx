@@ -30,12 +30,22 @@ function Home() {
             .then((response) => setPosts(response.data))
             .catch((error) => console.log('Không lấy được dữ liệu', error));
     }, []);
+
+    const [allUser, setAllUser] = useState([]);
+    //Lấy dữ liệu tất cả người dùng
+    useEffect(() => {
+        axios
+            .get('http://localhost:8080/users')
+            .then((response) => setAllUser(response.data))
+            .catch((error) => console.log('Không lấy được dữ liệu', error));
+    }, []);
+    console.log(allUser);
     // console.log(dataUser);
 
     //Lấy token người dùng
     const token = localStorage.getItem('authToken');
     console.log(posts);
-    
+
     //Lấy dữ liệu userId khi đăng nhập vào
     useEffect(() => {
         const fetchUserData = async () => {
@@ -66,7 +76,7 @@ function Home() {
         <Fragment>
             <div className={cx('wrapper')}>
                 {user && (
-                    <div className={cx('wr_startus')} >
+                    <div className={cx('wr_startus')}>
                         <div className={cx('img_startus')}>
                             <img alt="" src={user.avatar} />
                         </div>
@@ -80,16 +90,26 @@ function Home() {
                         </div>
 
                         {/* Xử lí render info post */}
-                        {showModalPost && <ModalPost user={user} closeModal={() => setShowModalPost(false)} isActiveAdd nameModal='Đăng bài viết' idUser={user.id}/>}
+                        {showModalPost && (
+                            <ModalPost
+                                user={user}
+                                closeModal={() => setShowModalPost(false)}
+                                isActiveAdd
+                                nameModal="Đăng bài viết"
+                                idUser={user.id}
+                            />
+                        )}
                     </div>
                 )}
 
                 {/* Render component Post ra màn hình */}
-                {posts.map((item, index) => (
-                    // console.log(item)
-                    <PostUser setPosts={setPosts} user={user} key={item.id} item={item} index={index} />
-                    
-                ))}
+                {posts.map(
+                    (item, index) =>
+                        item.oneUser.status === 0 && (
+                            // console.log(item)
+                            <PostUser setPosts={setPosts} user={user} key={item.id} item={item} index={index} />
+                        ),
+                )}
             </div>
         </Fragment>
     );

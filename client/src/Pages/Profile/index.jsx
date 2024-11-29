@@ -120,12 +120,6 @@ function Profile() {
         };
     }, []);
 
-    //Btn Trang rieng tu hoac cong khai
-    const [loading, setLoading] = React.useState(true);
-    function handleClickBtn() {
-        setLoading(true);
-    }
-
     //Xử lí chuyển đến trang chi tiết bài viết khi click vào bài post
     const navigation = useNavigate();
 
@@ -150,6 +144,7 @@ function Profile() {
     const [username, setUsername] = useState('');
     const [name, setName] = useState('');
     const [bio, setBio] = useState('');
+    const [status, setStatus] = useState(0);
     // const [avatar, setAvatar] = useState();
 
     // const handlePreviewAvatar = (e) => {
@@ -160,14 +155,36 @@ function Profile() {
 
     // };
 
+    //Btn Trang rieng tu hoac cong khai
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (user.status === 0) {
+            setLoading(false);
+        } else if (user.status === 1) {
+            setLoading(true);
+        }
+    }, [user.status]);
+
+    const handleClickBtn = () => {
+        setLoading(true);
+
+        if (!loading) {
+            setStatus(1);
+        } else if (loading) {
+            setStatus(0);
+        }
+    };
+
     const handleSubmitEditProfile = async () => {
         try {
             const response = await axios.put(`http://localhost:8080/users/${user.id}`, {
                 username: username,
                 name: name,
                 bio: bio,
+                status: status,
             });
-            
+
             // setUser((prevUser) =>
             //     prevUser.map((userId) =>
             //         userId.id === user.id ? { ...userId, username: username, name: name, bio: bio, avatar: avatar } : userId,
@@ -281,18 +298,38 @@ function Profile() {
                                     <div className={cx('wr_edit_item')}>
                                         <div className={cx('my_status')}>
                                             <p>Trang cá nhân riêng tư</p>
-                                            <FormControlLabel
-                                                className={cx('status')}
-                                                sx={{ display: 'block' }}
-                                                control={
-                                                    <Switch
-                                                        checked={loading}
-                                                        onChange={() => setLoading(!loading)}
-                                                        name="loading"
-                                                        color="primary"
+
+                                            {user.status === 0 ? (
+                                                <FormControlLabel
+                                                    className={cx('status')}
+                                                    sx={{ display: 'block' }}
+                                                    control={
+                                                        <Switch
+                                                            checked={loading}
+                                                            onChange={() => setLoading(!loading)}
+                                                            name="loading"
+                                                            color="#333"
+                                                        />
+                                                    }
+                                                    onClick={handleClickBtn}
+                                                />
+                                            ) : (
+                                                user.status === 1 && (
+                                                    <FormControlLabel
+                                                        className={cx('status')}
+                                                        sx={{ display: 'block' }}
+                                                        control={
+                                                            <Switch
+                                                                checked={loading}
+                                                                onChange={() => setLoading(!loading)}
+                                                                name="loading"
+                                                                color="primary"
+                                                            />
+                                                        }
+                                                        onClick={handleClickBtn}
                                                     />
-                                                }
-                                            />
+                                                )
+                                            )}
                                         </div>
                                     </div>
                                     <div className={cx('btn_confirm')}>

@@ -40,7 +40,7 @@ function Routes(app) {
       // Truy vấn thông tin người dùng từ bảng users
       const user = await dbModel.User.findOne({
         where: { id: userId },
-        attributes: ['id', 'username', 'email', 'name', 'avatar','bio','role'], // Chọn các cột bạn cần
+        attributes: ['id', 'username', 'email', 'name', 'avatar','bio','role','status'], // Chọn các cột bạn cần
       });
   
       if (!user) {

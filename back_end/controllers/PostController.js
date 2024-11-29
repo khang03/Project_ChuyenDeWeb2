@@ -16,7 +16,7 @@ class PostController {
         {
           model: dbModel.User,
           as: "oneUser",
-          attributes: ["id", "username", "avatar"],
+          attributes: ["id", "username", "avatar","status"],
         },
         {
           model: dbModel.Comment,
@@ -57,7 +57,7 @@ class PostController {
         },
         {
           model: dbModel.User,
-          attributes: ["id", "username", "avatar"],
+          attributes: ["id", "username", "avatar","status"],
           as: "oneUser",
         },
         {
@@ -109,7 +109,7 @@ class PostController {
         },
         {
           model: dbModel.User,
-          attributes: ["id", "username", "avatar"],
+          attributes: ["id", "username", "avatar","status"],
           as: "oneUser",
         },
         {
@@ -161,7 +161,7 @@ class PostController {
         {
           model: dbModel.User,
           as: "oneUser",
-          attributes: ["username", "avatar"],
+          attributes: ["username", "avatar","status"],
         },
         {
           model: dbModel.Comment,

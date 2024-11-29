@@ -218,7 +218,9 @@ const PostUser = ({ isActiveEdit, setPosts, user, item, index }) => {
                                 >
                                     <MenuItem onClick={handleCloseReport}>Báo cáo bài viết ! </MenuItem>
                                 </Menu>
-                                {modalReport && <ModalReportPost setModalreport={setModalReport} user={user} item={item} />}
+                                {modalReport && (
+                                    <ModalReportPost setModalreport={setModalReport} user={user} item={item} />
+                                )}
                             </div>
                         )}
 

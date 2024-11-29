@@ -193,13 +193,14 @@ class UserController {
   // [PUT] sửa đổi thông tin người dùng
   update(req, res) {
     const { id } = req.params;
-    const { username, name, bio } = req.body;
+    const { username, name, bio, status } = req.body;
 
     dbModel.User.update(
       {
         username: username,
         name: name,
         bio: bio,
+        status: status
       },
       { where: { id } }
     )
