@@ -159,7 +159,7 @@ function Chat() {
             .then(response => setResultSearch(response.data))
             .catch(error => console.log(error))  
     }
-    console.log(resultSearch);
+    console.log(listFriend, 'hihihi');
      
 
     return (

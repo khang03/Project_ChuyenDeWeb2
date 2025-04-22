@@ -5,14 +5,19 @@
     // border: 1px solid #333;
     position: fixed;
     z-index: 1;
+    align-content: center;    
+    padding: 20px;
 }
 
 .list_nav {
     list-style: none;
     text-align: center;
-    height: 80%;
-    align-content: center;
+    height: 60%;
     font-size: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
     
 }
 .item_nav {
